@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head><title>MIND - Authorization</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body { font-family: -apple-system, sans-serif; background: #0b0b12; color: #e4e4ed; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 20px; }
+.card { background: #16162a; border: 1px solid rgba(120,100,240,0.12); border-radius: 16px; padding: 40px; max-width: 500px; text-align: center; }
+.code-box { background: #0b0b12; border: 1px solid rgba(120,100,240,0.2); border-radius: 8px; padding: 16px; margin: 16px 0; word-break: break-all; font-size: 13px; color: #9b7cf5; }
+.btn { display: inline-block; background: linear-gradient(135deg,#7c5cf0,#a855f7); color: #fff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 700; border: none; cursor: pointer; font-size: 14px; }
+.btn:hover { transform: translateY(-1px); }
+.hidden { display: none; }
+.success { color: #22c55e; font-size: 1.2rem; margin-bottom: 8px; }
+</style>
+</head>
+<body>
+<div class="card" id="card">
+  <div id="loading">🔄 正在处理授权...</div>
+  <div id="result" class="hidden"></div>
+</div>
+<script>
+const params = new URLSearchParams(window.location.search);
+const code = params.get('code');
+const state = params.get('state');
+const error = params.get('error');
+
+if (error) {
+  document.getElementById('loading').textContent = '❌ 授权失败: ' + error;
+} else if (code) {
+  document.getElementById('loading').className = 'hidden';
+  document.getElementById('result').className = '';
+  document.getElementById('result').innerHTML = 
+    '<div class="success">✅ 授权成功！</div>' +
+    '<p style="color:#9999b3;font-size:14px;">请复制下面的代码发给你的 AI 助手：</p>' +
+    '<div class="code-box" id="authCode">' + code + '</div>' +
+    '<button class="btn" onclick="copyCode()">📋 复制代码</button>';
+} else {
+  document.getElementById('loading').textContent = '⏳ 等待授权... 没有收到授权码。';
+}
+
+function copyCode() {
+  const codeEl = document.getElementById('authCode');
+  navigator.clipboard.writeText(codeEl.textContent).then(() => {
+    alert('已复制！');
+  }).catch(() => {
+    // Fallback for older browsers
+    const range = document.createRange();
+    range.selectNode(codeEl);
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
+    document.execCommand('copy');
+    alert('已复制！');
+  });
+}
+</script>
+</body>
+</html>

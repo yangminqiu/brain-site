@@ -1,15 +1,14 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BRAIN — 社区拥有的AI</title>
+  <title>BRAIN — Community Owned AI</title>
   <style>
-    /* ===== Reset & Base ===== */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
       background: #0a0a0f;
       color: #e0e0e8;
       line-height: 1.6;
@@ -19,376 +18,252 @@
     a:hover { color: #9b8cf5; }
     .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
 
-    /* ===== Neural Background ===== */
+    /* ===== Neural BG ===== */
     #bg-canvas {
-      position: fixed;
-      top: 0; left: 0;
+      position: fixed; top: 0; left: 0;
       width: 100%; height: 100%;
-      z-index: 0;
-      pointer-events: none;
+      z-index: 0; pointer-events: none;
       opacity: 0.3;
     }
 
-    /* ===== Navigation ===== */
+    /* ===== Nav ===== */
     nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
+      position: fixed; top: 0; left: 0; right: 0;
       z-index: 100;
       padding: 16px 0;
-      background: rgba(10, 10, 15, 0.85);
+      background: rgba(10,10,15,0.85);
       backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(124, 106, 240, 0.1);
+      border-bottom: 1px solid rgba(124,106,240,0.1);
     }
     nav .container {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      display: flex; align-items: center; justify-content: space-between;
     }
     .logo {
-      font-size: 1.4rem;
-      font-weight: 800;
-      background: linear-gradient(135deg, #7c6af0, #c084fc);
+      font-size: 1.4rem; font-weight: 800;
+      background: linear-gradient(135deg,#7c6af0,#c084fc);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
-    .nav-links { display: flex; gap: 28px; }
-    .nav-links a {
-      color: #a0a0b8;
-      font-size: 0.9rem;
-      transition: color 0.2s;
-    }
+    .nav-right { display: flex; align-items: center; gap: 24px; }
+    .nav-links { display: flex; gap: 24px; }
+    .nav-links a { color: #a0a0b8; font-size: 0.9rem; transition: color 0.2s; }
     .nav-links a:hover { color: #e0e0e8; }
+    .lang-btn {
+      padding: 6px 14px;
+      border-radius: 8px;
+      border: 1px solid rgba(124,106,240,0.3);
+      background: transparent;
+      color: #a0a0b8;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-weight: 600;
+    }
+    .lang-btn:hover { border-color: #7c6af0; color: #e0e0e8; }
 
     /* ===== Hero ===== */
     .hero {
-      position: relative;
-      z-index: 1;
+      position: relative; z-index: 1;
       min-height: 100vh;
-      display: flex;
-      align-items: center;
+      display: flex; align-items: center;
       padding-top: 80px;
     }
     .hero-content { max-width: 780px; }
     .hero-badge {
-      display: inline-block;
-      padding: 6px 16px;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      background: rgba(124, 106, 240, 0.15);
+      display: inline-block; padding: 6px 16px;
+      border-radius: 20px; font-size: 0.8rem; font-weight: 600;
+      background: rgba(124,106,240,0.15);
       color: #9b8cf5;
-      border: 1px solid rgba(124, 106, 240, 0.2);
-      margin-bottom: 24px;
-      letter-spacing: 0.5px;
+      border: 1px solid rgba(124,106,240,0.2);
+      margin-bottom: 24px; letter-spacing: 0.5px;
     }
     .hero h1 {
-      font-size: 4rem;
-      font-weight: 900;
-      line-height: 1.1;
-      margin-bottom: 24px;
+      font-size: 4rem; font-weight: 900; line-height: 1.1; margin-bottom: 24px;
     }
     .hero h1 .gradient {
-      background: linear-gradient(135deg, #7c6af0 0%, #c084fc 40%, #f472b6 70%, #fb923c 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      background: linear-gradient(135deg,#7c6af0 0%,#c084fc 40%,#f472b6 70%,#fb923c 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
     .hero p {
-      font-size: 1.2rem;
-      color: #8888a0;
-      margin-bottom: 40px;
-      max-width: 600px;
-      line-height: 1.8;
+      font-size: 1.2rem; color: #8888a0;
+      margin-bottom: 40px; max-width: 600px; line-height: 1.8;
     }
     .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
     .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 14px 32px;
-      border-radius: 12px;
-      font-size: 1rem;
-      font-weight: 700;
-      border: none;
-      cursor: pointer;
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 32px; border-radius: 12px;
+      font-size: 1rem; font-weight: 700; border: none; cursor: pointer;
       transition: all 0.3s;
     }
     .btn-primary {
-      background: linear-gradient(135deg, #7c6af0, #a855f7);
-      color: #fff;
+      background: linear-gradient(135deg,#7c6af0,#a855f7); color: #fff;
     }
     .btn-primary:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 30px rgba(124, 106, 240, 0.35);
+      box-shadow: 0 8px 30px rgba(124,106,240,0.35);
     }
     .btn-outline {
-      background: transparent;
-      color: #e0e0e8;
-      border: 1px solid rgba(124, 106, 240, 0.3);
+      background: transparent; color: #e0e0e8;
+      border: 1px solid rgba(124,106,240,0.3);
     }
-    .btn-outline:hover {
-      border-color: #7c6af0;
-      background: rgba(124, 106, 240, 0.08);
-    }
-
-    /* ===== Stats ===== */
+    .btn-outline:hover { border-color: #7c6af0; background: rgba(124,106,240,0.08); }
     .hero-stats {
-      display: flex;
-      gap: 48px;
-      margin-top: 64px;
+      display: flex; gap: 48px; margin-top: 64px;
     }
-    .hero-stats .stat-value {
-      font-size: 2rem;
-      font-weight: 800;
-      color: #e0e0e8;
-    }
-    .hero-stats .stat-label {
-      font-size: 0.85rem;
-      color: #686880;
-    }
+    .hero-stats .stat-value { font-size: 2rem; font-weight: 800; color: #e0e0e8; }
+    .hero-stats .stat-label { font-size: 0.85rem; color: #686880; }
 
-    /* ===== Section Common ===== */
-    section {
-      position: relative;
-      z-index: 1;
-      padding: 120px 0;
-    }
+    /* ===== Sections ===== */
+    section { position: relative; z-index: 1; padding: 120px 0; }
     .section-label {
-      font-size: 0.85rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      color: #7c6af0;
-      margin-bottom: 16px;
+      font-size: 0.85rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 2px;
+      color: #7c6af0; margin-bottom: 16px;
     }
     .section-title {
-      font-size: 2.8rem;
-      font-weight: 900;
-      margin-bottom: 20px;
-      line-height: 1.2;
+      font-size: 2.8rem; font-weight: 900; margin-bottom: 20px; line-height: 1.2;
     }
     .section-subtitle {
-      font-size: 1.1rem;
-      color: #8888a0;
-      max-width: 600px;
-      margin-bottom: 64px;
+      font-size: 1.1rem; color: #8888a0;
+      max-width: 600px; margin-bottom: 64px;
     }
 
     /* ===== Problem/Solution ===== */
-    .problem-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 48px;
-    }
+    .problem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
     .problem-card {
-      padding: 40px;
-      border-radius: 20px;
+      padding: 40px; border-radius: 20px;
       background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(124, 106, 240, 0.1);
+      border: 1px solid rgba(124,106,240,0.1);
     }
     .problem-card .icon { font-size: 2rem; margin-bottom: 16px; }
     .problem-card h3 { font-size: 1.5rem; margin-bottom: 12px; }
     .problem-card p { color: #8888a0; font-size: 0.95rem; line-height: 1.8; }
-    .problem-card.bad { border-color: rgba(239, 68, 68, 0.2); }
-    .problem-card.good { border-color: rgba(34, 197, 94, 0.2); }
+    .problem-card.bad { border-color: rgba(239,68,68,0.2); }
+    .problem-card.good { border-color: rgba(34,197,94,0.2); }
     .problem-card ul { list-style: none; margin-top: 16px; }
-    .problem-card ul li {
-      padding: 8px 0;
-      color: #8888a0;
-      font-size: 0.9rem;
-    }
-    .problem-card ul li::before {
-      content: "✗ ";
-      color: #ef4444;
-      font-weight: 700;
-    }
-    .problem-card.good ul li::before {
-      content: "✓ ";
-      color: #22c55e;
-    }
+    .problem-card ul li { padding: 8px 0; color: #8888a0; font-size: 0.9rem; }
+    .problem-card.bad ul li::before { content: "✗ "; color: #ef4444; font-weight: 700; }
+    .problem-card.good ul li::before { content: "✓ "; color: #22c55e; }
 
     /* ===== How It Works ===== */
-    .steps {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 24px;
-    }
+    .steps { display: grid; grid-template-columns: repeat(4,1fr); gap: 24px; }
     .step-card {
-      padding: 32px 24px;
-      border-radius: 16px;
+      padding: 32px 24px; border-radius: 16px;
       background: rgba(255,255,255,0.02);
-      border: 1px solid rgba(124, 106, 240, 0.08);
-      text-align: center;
-      transition: all 0.3s;
+      border: 1px solid rgba(124,106,240,0.08);
+      text-align: center; transition: all 0.3s;
     }
     .step-card:hover {
-      border-color: rgba(124, 106, 240, 0.3);
-      transform: translateY(-4px);
+      border-color: rgba(124,106,240,0.3); transform: translateY(-4px);
     }
     .step-number {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #7c6af0, #a855f7);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 900;
-      font-size: 1.2rem;
+      width: 48px; height: 48px; border-radius: 50%;
+      background: linear-gradient(135deg,#7c6af0,#a855f7);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 1.2rem;
       margin: 0 auto 16px;
     }
     .step-card h4 { font-size: 1.1rem; margin-bottom: 8px; }
     .step-card p { color: #8888a0; font-size: 0.85rem; line-height: 1.6; }
 
     /* ===== Tokenomics ===== */
-    .token-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 48px;
-      align-items: start;
-    }
-    .token-chart {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-    .token-bar {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-    .token-bar .label {
-      width: 100px;
-      font-size: 0.9rem;
-      color: #a0a0b8;
-      text-align: right;
-    }
+    .token-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+    .token-bars { display: flex; flex-direction: column; gap: 16px; }
+    .token-bar { display: flex; align-items: center; gap: 16px; }
+    .token-bar .label { width: 100px; font-size: 0.9rem; color: #a0a0b8; text-align: right; }
     .token-bar .bar-wrap {
-      flex: 1;
-      height: 28px;
-      background: rgba(255,255,255,0.05);
-      border-radius: 14px;
-      overflow: hidden;
+      flex: 1; height: 28px;
+      background: rgba(255,255,255,0.05); border-radius: 14px; overflow: hidden;
     }
     .token-bar .bar-fill {
-      height: 100%;
-      border-radius: 14px;
-      transition: width 1s ease;
+      height: 100%; border-radius: 14px; transition: width 1s ease;
     }
-    .token-bar .pct {
-      width: 50px;
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: #e0e0e8;
-    }
+    .token-bar .pct { width: 50px; font-size: 0.9rem; font-weight: 700; color: #e0e0e8; }
     .token-desc h3 { font-size: 1.5rem; margin-bottom: 16px; }
     .token-desc p { color: #8888a0; line-height: 1.8; margin-bottom: 16px; }
     .token-desc ul { list-style: none; }
     .token-desc ul li {
-      padding: 8px 0;
-      color: #8888a0;
-      font-size: 0.9rem;
+      padding: 8px 0; color: #8888a0; font-size: 0.9rem;
       border-bottom: 1px solid rgba(255,255,255,0.04);
     }
     .token-desc ul li:last-child { border: none; }
     .token-desc ul li span { color: #e0e0e8; font-weight: 600; }
 
-    /* ===== FAQ ===== */
-    .faq-list { max-width: 780px; }
-    .faq-item {
-      border-bottom: 1px solid rgba(124, 106, 240, 0.1);
-      padding: 20px 0;
+    /* ===== Whitepaper ===== */
+    .wp-section {
+      background: linear-gradient(180deg, transparent 0%, rgba(124,106,240,0.04) 50%, transparent 100%);
     }
-    .faq-question {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      cursor: pointer;
-      font-size: 1.05rem;
-      font-weight: 600;
-      color: #e0e0e8;
-      user-select: none;
+    .wp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+    .wp-card {
+      padding: 36px; border-radius: 20px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(124,106,240,0.08);
     }
-    .faq-question .arrow {
-      transition: transform 0.3s;
-      font-size: 1.2rem;
-      color: #7c6af0;
+    .wp-card h3 { font-size: 1.3rem; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+    .wp-card p { color: #8888a0; line-height: 1.8; font-size: 0.95rem; margin-bottom: 12px; }
+    .wp-card ul { list-style: none; }
+    .wp-card ul li {
+      padding: 6px 0; color: #a0a0b8; font-size: 0.9rem;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
     }
-    .faq-item.open .faq-question .arrow {
-      transform: rotate(180deg);
-    }
-    .faq-answer {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.3s ease, padding 0.3s ease;
-      color: #8888a0;
-      line-height: 1.8;
-    }
-    .faq-item.open .faq-answer {
-      max-height: 300px;
-      padding-top: 16px;
-    }
+    .wp-card ul li:last-child { border: none; }
+    .wp-card ul li::before { content: "▸ "; color: #7c6af0; }
 
     /* ===== Roadmap ===== */
-    .roadmap {
-      position: relative;
-      padding-left: 40px;
-    }
+    .roadmap { position: relative; padding-left: 40px; }
     .roadmap::before {
-      content: '';
-      position: absolute;
-      left: 15px;
-      top: 0;
-      bottom: 0;
+      content: ''; position: absolute; left: 15px; top: 0; bottom: 0;
       width: 2px;
       background: linear-gradient(to bottom, #7c6af0, transparent);
     }
-    .roadmap-item {
-      position: relative;
-      padding-bottom: 48px;
-    }
+    .roadmap-item { position: relative; padding-bottom: 48px; }
     .roadmap-item:last-child { padding-bottom: 0; }
     .roadmap-item::before {
-      content: '';
-      position: absolute;
-      left: -33px;
-      top: 8px;
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      background: #7c6af0;
-      border: 3px solid #0a0a0f;
+      content: ''; position: absolute; left: -33px; top: 8px;
+      width: 16px; height: 16px; border-radius: 50%;
+      background: #7c6af0; border: 3px solid #0a0a0f;
     }
     .roadmap-phase {
-      font-size: 0.8rem;
-      font-weight: 700;
-      color: #7c6af0;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 4px;
+      font-size: 0.8rem; font-weight: 700; color: #7c6af0;
+      text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;
     }
     .roadmap-item h4 { font-size: 1.2rem; margin-bottom: 8px; }
     .roadmap-item p { color: #8888a0; font-size: 0.9rem; line-height: 1.6; }
     .roadmap-item .status {
-      display: inline-block;
-      padding: 2px 10px;
-      border-radius: 10px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      margin-top: 8px;
+      display: inline-block; padding: 2px 10px; border-radius: 10px;
+      font-size: 0.75rem; font-weight: 600; margin-top: 8px;
     }
-    .status-done { background: rgba(34, 197, 94, 0.15); color: #22c55e; }
-    .status-now { background: rgba(124, 106, 240, 0.15); color: #7c6af0; }
-    .status-next { background: rgba(255, 255, 255, 0.05); color: #686880; }
+    .status-done { background: rgba(34,197,94,0.15); color: #22c55e; }
+    .status-now { background: rgba(124,106,240,0.15); color: #7c6af0; }
+    .status-next { background: rgba(255,255,255,0.05); color: #686880; }
+
+    /* ===== FAQ ===== */
+    .faq-list { max-width: 780px; }
+    .faq-item {
+      border-bottom: 1px solid rgba(124,106,240,0.1); padding: 20px 0;
+    }
+    .faq-question {
+      display: flex; justify-content: space-between; align-items: center;
+      cursor: pointer; font-size: 1.05rem; font-weight: 600;
+      color: #e0e0e8; user-select: none;
+    }
+    .faq-question .arrow {
+      transition: transform 0.3s; font-size: 1.2rem; color: #7c6af0;
+    }
+    .faq-item.open .faq-question .arrow { transform: rotate(180deg); }
+    .faq-answer {
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+      color: #8888a0; line-height: 1.8;
+    }
+    .faq-item.open .faq-answer { max-height: 300px; padding-top: 16px; }
 
     /* ===== Footer ===== */
     footer {
-      position: relative;
-      z-index: 1;
+      position: relative; z-index: 1;
       padding: 48px 0;
-      border-top: 1px solid rgba(124, 106, 240, 0.08);
-      text-align: center;
-      color: #686880;
-      font-size: 0.85rem;
+      border-top: 1px solid rgba(124,106,240,0.08);
+      text-align: center; color: #686880; font-size: 0.85rem;
     }
 
     /* ===== Responsive ===== */
@@ -399,6 +274,7 @@
       .problem-grid { grid-template-columns: 1fr; }
       .steps { grid-template-columns: 1fr 1fr; }
       .token-grid { grid-template-columns: 1fr; }
+      .wp-grid { grid-template-columns: 1fr; }
       .section-title { font-size: 2rem; }
     }
     @media (max-width: 480px) {
@@ -407,343 +283,540 @@
   </style>
 </head>
 <body>
-
-  <!-- ===== Neural Background ===== -->
   <canvas id="bg-canvas"></canvas>
 
-  <!-- ===== Navigation ===== -->
+  <!-- Nav -->
   <nav>
     <div class="container">
-      <div class="logo">✦ BRAIN</div>
-      <div class="nav-links">
-        <a href="#problem">问题</a>
-        <a href="#how">如何运作</a>
-        <a href="#tokenomics">代币</a>
-        <a href="#roadmap">路线图</a>
-        <a href="#faq">FAQ</a>
+      <div class="logo">✦ <span data-i18n="nav-brand">BRAIN</span></div>
+      <div class="nav-right">
+        <div class="nav-links">
+          <a href="#problem" data-i18n="nav-problem">Problem</a>
+          <a href="#how" data-i18n="nav-how">How It Works</a>
+          <a href="#whitepaper" data-i18n="nav-whitepaper">Whitepaper</a>
+          <a href="#tokenomics" data-i18n="nav-token">Token</a>
+          <a href="#roadmap" data-i18n="nav-roadmap">Roadmap</a>
+          <a href="#faq" data-i18n="nav-faq">FAQ</a>
+        </div>
+        <button class="lang-btn" id="langToggle" onclick="toggleLang()">中文</button>
       </div>
     </div>
   </nav>
 
-  <!-- ===== Hero ===== -->
-  <section class="hero">
+  <!-- Hero -->
+  <section class="hero" id="hero">
     <div class="container">
       <div class="hero-content">
-        <div class="hero-badge">✦ 社区拥有的 AI</div>
+        <div class="hero-badge" data-i18n="hero-badge">✦ Community Owned AI</div>
         <h1>
-          你的知识<br>
-          <span class="gradient">决定AI的未来</span>
+          <span data-i18n="hero-line1">Your Knowledge</span><br>
+          <span class="gradient" data-i18n="hero-line2">Shapes the Future of AI</span>
         </h1>
-        <p>
-          BRAIN 不是另一个 AI 产品。它是一个由持有者共同治理的 AI 生态。<br>
-          你贡献知识、投票方向、分享成长。AI 为社区服务，不为股东。
+        <p data-i18n="hero-desc">
+          BRAIN is not just another AI product. It is an AI ecosystem governed by its holders.<br>
+          You contribute knowledge, vote on direction, and share the growth. AI serves the community — not shareholders.
         </p>
         <div class="hero-actions">
-          <a href="#how" class="btn btn-primary">了解如何运作 ↓</a>
-          <a href="#tokenomics" class="btn btn-outline">查看代币经济</a>
+          <a href="#how" class="btn btn-primary" data-i18n="hero-cta1">How It Works ↓</a>
+          <a href="#whitepaper" class="btn btn-outline" data-i18n="hero-cta2">Read Whitepaper</a>
         </div>
         <div class="hero-stats">
-          <div>
-            <div class="stat-value">10亿</div>
-            <div class="stat-label">总供应量</div>
-          </div>
-          <div>
-            <div class="stat-value">40%</div>
-            <div class="stat-label">社区分配</div>
-          </div>
-          <div>
-            <div class="stat-value">∞</div>
-            <div class="stat-label">社区驱动</div>
-          </div>
+          <div><div class="stat-value">1B</div><div class="stat-label" data-i18n="stat-supply">Total Supply</div></div>
+          <div><div class="stat-value">40%</div><div class="stat-label" data-i18n="stat-community">Community Allocation</div></div>
+          <div><div class="stat-value">∞</div><div class="stat-label" data-i18n="stat-driven">Community Driven</div></div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ===== Problem / Solution ===== -->
+  <!-- Problem / Solution -->
   <section id="problem">
     <div class="container">
-      <div class="section-label">问题 & 解决方案</div>
+      <div class="section-label" data-i18n="problem-label">Problem & Solution</div>
       <div class="problem-grid">
         <div class="problem-card bad">
           <div class="icon">🏢</div>
-          <h3>今天的 AI 为谁服务？</h3>
+          <h3 data-i18n="problem-bad-title">Who Does AI Serve Today?</h3>
           <ul>
-            <li>大公司决定 AI 学什么、怎么用</li>
-            <li>用户贡献数据但无回报</li>
-            <li>收费越来越高，你无话可说</li>
-            <li>AI 进化方向 = 股东利益最大化</li>
+            <li data-i18n="problem-bad-1">Big companies decide what AI learns</li>
+            <li data-i18n="problem-bad-2">Users contribute data but get nothing back</li>
+            <li data-i18n="problem-bad-3">Fees keep rising — you have no say</li>
+            <li data-i18n="problem-bad-4">AI evolves for shareholder profit, not users</li>
           </ul>
         </div>
         <div class="problem-card good">
           <div class="icon">🌐</div>
-          <h3>BRAIN 的答案</h3>
+          <h3 data-i18n="problem-good-title">The BRAIN Answer</h3>
           <ul>
-            <li>持有 $BRAIN = 社区治理权</li>
-            <li>你贡献知识，你获得回报</li>
-            <li>AI 路线由社区投票决定</li>
-            <li>价值回归持有者，而非股东</li>
+            <li data-i18n="problem-good-1">Hold $BRAIN = community governance rights</li>
+            <li data-i18n="problem-good-2">You contribute knowledge, you get rewarded</li>
+            <li data-i18n="problem-good-3">AI direction decided by community vote</li>
+            <li data-i18n="problem-good-4">Value flows back to holders, not shareholders</li>
           </ul>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ===== How It Works ===== -->
+  <!-- How It Works -->
   <section id="how">
     <div class="container">
-      <div class="section-label">如何运作</div>
-      <h2 class="section-title">四步参与 AI 进化</h2>
-      <p class="section-subtitle">从购买代币到影响 AI 发展方向，全过程透明、链上记录。</p>
+      <div class="section-label" data-i18n="how-label">How It Works</div>
+      <h2 class="section-title" data-i18n="how-title">Four Steps to Shape AI</h2>
+      <p class="section-subtitle" data-i18n="how-desc">From buying tokens to influencing AI development — everything is transparent and on-chain.</p>
       <div class="steps">
         <div class="step-card">
           <div class="step-number">1</div>
-          <h4>持有 $BRAIN</h4>
-          <p>在去中心化交易所购买 $BRAIN 代币，成为社区成员。拥有参与治理和贡献的基础资格。</p>
+          <h4 data-i18n="step1-title">Hold $BRAIN</h4>
+          <p data-i18n="step1-desc">Buy $BRAIN on a decentralized exchange and become a community member. Holding tokens is your key to participation.</p>
         </div>
         <div class="step-card">
           <div class="step-number">2</div>
-          <h4>提交知识</h4>
-          <p>消耗少量 $BRAIN 提交你希望 AI 学习的内容，包括主题、文章、教程，或回答其他人提出的问题。</p>
+          <h4 data-i18n="step2-title">Submit Knowledge</h4>
+          <p data-i18n="step2-desc">Spend a small amount of $BRAIN to submit topics, articles, tutorials, or answers that you want the AI to learn.</p>
         </div>
         <div class="step-card">
           <div class="step-number">3</div>
-          <h4>社区投票</h4>
-          <p>所有提交的内容由持有者投票筛选。高质量的内容进入 AI 知识库，并奖励提交者和投票者。</p>
+          <h4 data-i18n="step3-title">Community Voting</h4>
+          <p data-i18n="step3-desc">All submissions are voted on by holders. High-quality content enters the AI knowledge base, rewarding both submitter and voters.</p>
         </div>
         <div class="step-card">
           <div class="step-number">4</div>
-          <h4>AI 持续进化</h4>
-          <p>社区筛选的知识不断丰富 AI 的知识库。AI 变得更懂社区需要，所有人共享更好的 AI 服务。</p>
+          <h4 data-i18n="step4-title">AI Evolves</h4>
+          <p data-i18n="step4-desc">Community-curated knowledge continuously enriches the AI. Everyone shares a smarter, more relevant AI.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ===== Tokenomics ===== -->
-  <section id="tokenomics">
+  <!-- Whitepaper -->
+  <section id="whitepaper" class="wp-section">
     <div class="container">
-      <div class="section-label">代币经济</div>
-      <h2 class="section-title">$BRAIN 分配</h2>
-      <p class="section-subtitle">总供应量 10 亿枚，永不增发。每一次 AI 调用都销毁部分代币，持续通缩。</p>
-      <div class="token-grid">
-        <div class="token-chart">
-          <div class="token-bar">
-            <span class="label">社区分配</span>
-            <div class="bar-wrap"><div class="bar-fill" style="width:40%;background:#7c6af0;"></div></div>
-            <span class="pct">40%</span>
-          </div>
-          <div class="token-bar">
-            <span class="label">流动性池</span>
-            <div class="bar-wrap"><div class="bar-fill" style="width:25%;background:#a855f7;"></div></div>
-            <span class="pct">25%</span>
-          </div>
-          <div class="token-bar">
-            <span class="label">Treasury</span>
-            <div class="bar-wrap"><div class="bar-fill" style="width:20%;background:#c084fc;"></div></div>
-            <span class="pct">20%</span>
-          </div>
-          <div class="token-bar">
-            <span class="label">团队</span>
-            <div class="bar-wrap"><div class="bar-fill" style="width:10%;background:#e879f9;"></div></div>
-            <span class="pct">10%</span>
-          </div>
-          <div class="token-bar">
-            <span class="label">早期空投</span>
-            <div class="bar-wrap"><div class="bar-fill" style="width:5%;background:#f472b6;"></div></div>
-            <span class="pct">5%</span>
-          </div>
-        </div>
-        <div class="token-desc">
-          <h3>通缩模型</h3>
-          <p>每一次 AI 调用消耗的代币中，<strong>50% 被永久销毁</strong>，50% 作为奖励分配给知识贡献者和投票者。这意味着使用越多，流通量越少。</p>
+      <div class="section-label" data-i18n="wp-label">Whitepaper</div>
+      <h2 class="section-title" data-i18n="wp-title">The Vision</h2>
+      <p class="section-subtitle" data-i18n="wp-subtitle">A decentralized AI ecosystem governed by its community. Full transparency, fair participation, shared rewards.</p>
+      <div class="wp-grid">
+        <div class="wp-card">
+          <h3>🎯 <span data-i18n="wp-mission-title">Mission</span></h3>
+          <p data-i18n="wp-mission-text">
+            To build the first truly community-owned AI — where every holder has a voice in what the AI learns, 
+            how it behaves, and where it evolves. No boardroom decisions. No hidden agendas.
+          </p>
           <ul>
-            <li><span>40% 社区分配</span> — 通过贡献知识、投票、参与治理获得</li>
-            <li><span>25% 流动性池</span> — 确保交易深度和价格稳定</li>
-            <li><span>20% Treasury</span> — 用于社区资助、AI模型开发、生态建设</li>
-            <li><span>10% 团队</span> — 锁定12个月，每月线性解锁</li>
-            <li><span>5% 早期空投</span> — 激励早期社区成员和活跃贡献者</li>
+            <li data-i18n="wp-mission-1">Democratize AI development and governance</li>
+            <li data-i18n="wp-mission-2">Reward knowledge contributors fairly</li>
+            <li data-i18n="wp-mission-3">Create sustainable value through real utility</li>
+          </ul>
+        </div>
+        <div class="wp-card">
+          <h3>⚙️ <span data-i18n="wp-mech-title">Core Mechanism</span></h3>
+          <p data-i18n="wp-mech-text">
+            $BRAIN token holders drive the AI roadmap. Submit knowledge → community votes → AI ingests quality content → 
+            contributors earn rewards. Every AI call burns tokens, creating natural deflation.
+          </p>
+          <ul>
+            <li data-i18n="wp-mech-1">Token-gated submission & voting system</li>
+            <li data-i18n="wp-mech-2">Curated knowledge base powers AI responses</li>
+            <li data-i18n="wp-mech-3">50% of usage fees burned, 50% to contributors</li>
+          </ul>
+        </div>
+        <div class="wp-card">
+          <h3>🔮 <span data-i18n="wp-future-title">Future Vision</span></h3>
+          <p data-i18n="wp-future-text">
+            Phase 4 brings full on-chain governance: holders vote on AI model selection, behavior parameters, 
+            treasury allocation, and ecosystem partnerships. The community truly owns the AI.
+          </p>
+          <ul>
+            <li data-i18n="wp-future-1">On-chain proposal and voting system</li>
+            <li data-i18n="wp-future-2">AI model fine-tuning driven by community</li>
+            <li data-i18n="wp-future-3">Decentralized treasury management</li>
+          </ul>
+        </div>
+        <div class="wp-card">
+          <h3>📊 <span data-i18n="wp-econ-title">Token Economics</span></h3>
+          <p data-i18n="wp-econ-text">
+            Fixed supply of 1 billion $BRAIN. Deflationary by design — every AI interaction burns tokens. 
+            No inflation, no dilution. Value accrues to holders as the ecosystem grows.
+          </p>
+          <ul>
+            <li data-i18n="wp-econ-1">1B total supply, never minted again</li>
+            <li data-i18n="wp-econ-2">Deflationary burn mechanism on each use</li>
+            <li data-i18n="wp-econ-3">Team tokens locked 12 months</li>
           </ul>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ===== Roadmap ===== -->
-  <section id="roadmap">
+  <!-- Tokenomics -->
+  <section id="tokenomics">
     <div class="container">
-      <div class="section-label">路线图</div>
-      <h2 class="section-title">从萌芽到自治</h2>
-      <p class="section-subtitle">一个社区拥有的 AI，不是一蹴而就的。</p>
-      <div class="roadmap">
-        <div class="roadmap-item">
-          <div class="roadmap-phase">Phase 1 · 正在进行</div>
-          <h4>社区启动</h4>
-          <p>代币部署、官方网站上线、Telegram Bot 搭建、初始社区建设。持币即可参与基础知识库投票。</p>
-          <span class="status status-now">进行中</span>
+      <div class="section-label" data-i18n="token-label">Tokenomics</div>
+      <h2 class="section-title">$BRAIN <span data-i18n="token-title">Allocation</span></h2>
+      <p class="section-subtitle" data-i18n="token-subtitle">Total supply: 1,000,000,000. Every AI call burns tokens — continuous deflation.</p>
+      <div class="token-grid">
+        <div class="token-bars">
+          <div class="token-bar"><span class="label" data-i18n="token-bar1">Community</span><div class="bar-wrap"><div class="bar-fill" style="width:40%;background:#7c6af0;"></div></div><span class="pct">40%</span></div>
+          <div class="token-bar"><span class="label" data-i18n="token-bar2">Liquidity</span><div class="bar-wrap"><div class="bar-fill" style="width:25%;background:#a855f7;"></div></div><span class="pct">25%</span></div>
+          <div class="token-bar"><span class="label" data-i18n="token-bar3">Treasury</span><div class="bar-wrap"><div class="bar-fill" style="width:20%;background:#c084fc;"></div></div><span class="pct">20%</span></div>
+          <div class="token-bar"><span class="label" data-i18n="token-bar4">Team</span><div class="bar-wrap"><div class="bar-fill" style="width:10%;background:#e879f9;"></div></div><span class="pct">10%</span></div>
+          <div class="token-bar"><span class="label" data-i18n="token-bar5">Airdrop</span><div class="bar-wrap"><div class="bar-fill" style="width:5%;background:#f472b6;"></div></div><span class="pct">5%</span></div>
         </div>
-        <div class="roadmap-item">
-          <div class="roadmap-phase">Phase 2 · 即将到来</div>
-          <h4>知识提交系统</h4>
-          <p>上线完整的内容提交和投票功能。持币人可以提交知识内容，社区投票决定是否纳入 AI 知识库。</p>
-          <span class="status status-next">下一步</span>
-        </div>
-        <div class="roadmap-item">
-          <div class="roadmap-phase">Phase 3</div>
-          <h4>AI 模型集成</h4>
-          <p>将社区知识库接入 AI 模型。AI 回答问题时，优先引用社区验证的知识来源，并在回答中标注贡献者。</p>
-          <span class="status status-next">规划中</span>
-        </div>
-        <div class="roadmap-item">
-          <div class="roadmap-phase">Phase 4</div>
-          <h4>去中心化治理</h4>
-          <p>完整的链上投票系统上线。持有者可对 AI 行为参数、模型选择、资金使用等进行正式提案和投票。</p>
-          <span class="status status-next">规划中</span>
+        <div class="token-desc">
+          <h3 data-i18n="token-desc-title">Deflation Model</h3>
+          <p data-i18n="token-desc-text">Each AI call burns <strong>50%</strong> of the tokens spent. The other 50% rewards knowledge contributors and voters. More usage = less supply.</p>
+          <ul>
+            <li><span data-i18n="token-detail-1-label">40% Community</span> — <span data-i18n="token-detail-1-desc">Earned through contributions, voting, and governance</span></li>
+            <li><span data-i18n="token-detail-2-label">25% Liquidity</span> — <span data-i18n="token-detail-2-desc">Ensures trading depth and price stability</span></li>
+            <li><span data-i18n="token-detail-3-label">20% Treasury</span> — <span data-i18n="token-detail-3-desc">Community grants, AI dev, ecosystem growth</span></li>
+            <li><span data-i18n="token-detail-4-label">10% Team</span> — <span data-i18n="token-detail-4-desc">12-month lock, linear monthly unlock</span></li>
+            <li><span data-i18n="token-detail-5-label">5% Airdrop</span> — <span data-i18n="token-detail-5-desc">Early community and active contributor rewards</span></li>
+          </ul>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ===== FAQ ===== -->
+  <!-- Roadmap -->
+  <section id="roadmap">
+    <div class="container">
+      <div class="section-label" data-i18n="roadmap-label">Roadmap</div>
+      <h2 class="section-title" data-i18n="roadmap-title">From Seed to Self-Governance</h2>
+      <p class="section-subtitle" data-i18n="roadmap-subtitle">A community-owned AI doesn't happen overnight.</p>
+      <div class="roadmap">
+        <div class="roadmap-item">
+          <div class="roadmap-phase" data-i18n="roadmap-p1-phase">Phase 1 · In Progress</div>
+          <h4 data-i18n="roadmap-p1-title">Community Launch</h4>
+          <p data-i18n="roadmap-p1-desc">Token deployment, official website, Telegram Bot setup, initial community building. Holders can already participate in basic knowledge voting.</p>
+          <span class="status status-now" data-i18n="roadmap-p1-status">In Progress</span>
+        </div>
+        <div class="roadmap-item">
+          <div class="roadmap-phase" data-i18n="roadmap-p2-phase">Phase 2 · Coming Soon</div>
+          <h4 data-i18n="roadmap-p2-title">Knowledge Submission System</h4>
+          <p data-i18n="roadmap-p2-desc">Full content submission and voting system live. Token holders submit knowledge, community votes to curate the AI knowledge base.</p>
+          <span class="status status-next" data-i18n="roadmap-p2-status">Next Step</span>
+        </div>
+        <div class="roadmap-item">
+          <div class="roadmap-phase" data-i18n="roadmap-p3-phase">Phase 3</div>
+          <h4 data-i18n="roadmap-p3-title">AI Model Integration</h4>
+          <p data-i18n="roadmap-p3-desc">Integrate community knowledge base with AI model. AI answers reference community-verified sources with contributor attribution.</p>
+          <span class="status status-next" data-i18n="roadmap-p3-status">Planned</span>
+        </div>
+        <div class="roadmap-item">
+          <div class="roadmap-phase" data-i18n="roadmap-p4-phase">Phase 4</div>
+          <h4 data-i18n="roadmap-p4-title">Decentralized Governance</h4>
+          <p data-i18n="roadmap-p4-desc">Full on-chain voting. Holders vote on AI behavior, model selection, treasury use, and ecosystem partnerships.</p>
+          <span class="status status-next" data-i18n="roadmap-p4-status">Planned</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
   <section id="faq">
     <div class="container">
-      <div class="section-label">常见问题</div>
-      <h2 class="section-title">FAQ</h2>
-      <p class="section-subtitle">关于 BRAIN 你可能会问的问题。</p>
+      <div class="section-label" data-i18n="faq-label">FAQ</div>
+      <h2 class="section-title" data-i18n="faq-title">Frequently Asked Questions</h2>
+      <p class="section-subtitle" data-i18n="faq-subtitle">Everything you need to know about BRAIN.</p>
       <div class="faq-list">
         <div class="faq-item open">
           <div class="faq-question" onclick="toggleFaq(this)">
-            $BRAIN 可以用来做什么？
+            <span data-i18n="faq1-q">What can $BRAIN be used for?</span>
             <span class="arrow">▼</span>
           </div>
-          <div class="faq-answer">
-            持有 $BRAIN 可以获得社区治理权（投票决定AI学习方向），消耗代币提交知识内容，参与社区投票获得奖励，以及未来使用 AI 服务的优先访问权。它是整个生态的核心。
+          <div class="faq-answer" data-i18n="faq1-a">
+            Holding $BRAIN gives you governance rights (voting on AI learning direction), the ability to submit knowledge content, 
+            earn rewards from community voting, and future priority access to AI services. It is the core of the ecosystem.
           </div>
         </div>
         <div class="faq-item">
           <div class="faq-question" onclick="toggleFaq(this)">
-            AI 模型从哪来？我需要自己训练吗？
+            <span data-i18n="faq2-q">Where does the AI come from? Do I need to train my own?</span>
             <span class="arrow">▼</span>
           </div>
-          <div class="faq-answer">
-            初期使用成熟的开源大模型（如 DeepSeek、Qwen）作为基础，配合社区贡献的知识库提供增强回答。无需自己训练模型。Phase 3 后视社区发展情况，可考虑社区驱动的微调。
+          <div class="faq-answer" data-i18n="faq2-a">
+            We use mature open-source large language models (DeepSeek, Qwen) as the base, enhanced by the community-contributed 
+            knowledge base. No need to train your own model. Phase 3+ may introduce community-driven fine-tuning.
           </div>
         </div>
         <div class="faq-item">
           <div class="faq-question" onclick="toggleFaq(this)">
-            我怎么参与社区治理？
+            <span data-i18n="faq3-q">How do I participate in governance?</span>
             <span class="arrow">▼</span>
           </div>
-          <div class="faq-answer">
-            持有 $BRAIN 即可参与。治理包括：投票决定 AI 学习哪些主题的知识、投票筛选社区提交的内容、对 AI 行为参数（如风格、安全边界）进行提案和投票。早期持有者拥有更大的影响力权重。
+          <div class="faq-answer" data-i18n="faq3-a">
+            Hold $BRAIN and you're in. Governance includes voting on AI learning topics, curating submitted knowledge, 
+            and (in Phase 4) proposing and voting on AI behavior parameters, model choices, and more.
           </div>
         </div>
         <div class="faq-item">
           <div class="faq-question" onclick="toggleFaq(this)">
-            代币的价值从何而来？
+            <span data-i18n="faq4-q">What gives $BRAIN its value?</span>
             <span class="arrow">▼</span>
           </div>
-          <div class="faq-answer">
-            价值来源于供需关系：社区越活跃、AI 越好用，想参与的人越多，购买 $BRAIN 的需求越大。每次 AI 调用都销毁部分代币，供应持续减少。因此价值增长与生态活跃度直接挂钩。
+          <div class="faq-answer" data-i18n="faq4-a">
+            Supply and demand. The more active the community and the better the AI, the more people want to participate, 
+            driving demand for $BRAIN. Each AI call burns tokens, reducing supply. Value grows with ecosystem health.
           </div>
         </div>
         <div class="faq-item">
           <div class="faq-question" onclick="toggleFaq(this)">
-            如何购买 $BRAIN？
+            <span data-i18n="faq5-q">How do I buy $BRAIN?</span>
             <span class="arrow">▼</span>
           </div>
-          <div class="faq-answer">
-            代币部署后会添加流动性到去中心化交易所（DEX），届时可通过 Solana 钱包在 pump.fun 或 Raydium 购买。具体购买链接将在官网和 Telegram 社区公布。
+          <div class="faq-answer" data-i18n="faq5-a">
+            After deployment, $BRAIN will have liquidity on a decentralized exchange. You can buy via pump.fun or Raydium 
+            using a Solana wallet. Links will be posted on the website and Telegram community.
           </div>
         </div>
         <div class="faq-item">
           <div class="faq-question" onclick="toggleFaq(this)">
-            这个项目会 rug pull 吗？
+            <span data-i18n="faq6-q">Is this a rug pull?</span>
             <span class="arrow">▼</span>
           </div>
-          <div class="faq-answer">
-            不会。团队代币锁定 12 个月，流动性池不会随意撤出。所有重大决策都通过社区投票。项目方持币比例公开透明。项目的成功依赖于社区的信任和 AI 生态的发展。
+          <div class="faq-answer" data-i18n="faq6-a">
+            No. Team tokens are locked for 12 months. Liquidity will not be removed arbitrarily. All major decisions go through 
+            community vote. Our success depends on your trust and the ecosystem we build together.
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ===== Footer ===== -->
+  <!-- Footer -->
   <footer>
     <div class="container">
-      <div class="logo" style="margin-bottom:8px;">✦ BRAIN</div>
-      <p>社区拥有的 AI · 你贡献知识，你分享成长</p>
-      <p style="margin-top:12px;font-size:0.8rem;">© 2026 BRAIN. 这只是开始。</p>
+      <div class="logo" style="margin-bottom:8px;">✦ <span data-i18n="nav-brand">BRAIN</span></div>
+      <p data-i18n="footer-tagline">Community Owned AI · You contribute knowledge, you share the growth</p>
+      <p style="margin-top:12px;font-size:0.8rem;" data-i18n="footer-copy">© 2026 BRAIN. This is just the beginning.</p>
     </div>
   </footer>
 
-  <!-- ===== Neural Net Script ===== -->
   <script>
+    // ===== Neural BG =====
     const canvas = document.getElementById('bg-canvas');
     const ctx = canvas.getContext('2d');
     let w, h, nodes = [];
-    const NODE_COUNT = 50;
-    const CONNECTION_DIST = 150;
-
-    function resize() {
-      w = canvas.width = window.innerWidth;
-      h = canvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resize);
-    resize();
-
+    const NODE_COUNT = 50, CONN_DIST = 150;
+    function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
+    window.addEventListener('resize', resize); resize();
     class Node {
-      constructor() {
-        this.x = Math.random() * w;
-        this.y = Math.random() * h;
-        this.vx = (Math.random() - 0.5) * 0.3;
-        this.vy = (Math.random() - 0.5) * 0.3;
-        this.r = Math.random() * 3 + 1;
-      }
-      update() {
-        this.x += this.vx;
-        this.y += this.vy;
-        if (this.x < 0 || this.x > w) this.vx *= -1;
-        if (this.y < 0 || this.y > h) this.vy *= -1;
-      }
+      constructor() { this.x = Math.random()*w; this.y = Math.random()*h; this.vx = (Math.random()-0.5)*0.3; this.vy = (Math.random()-0.5)*0.3; this.r = Math.random()*3+1; }
+      update() { this.x+=this.vx; this.y+=this.vy; if(this.x<0||this.x>w)this.vx*=-1; if(this.y<0||this.y>h)this.vy*=-1; }
     }
-
-    for (let i = 0; i < NODE_COUNT; i++) nodes.push(new Node());
-
+    for(let i=0;i<NODE_COUNT;i++) nodes.push(new Node());
     function draw() {
-      ctx.clearRect(0, 0, w, h);
-      nodes.forEach(n => {
-        n.update();
-        ctx.beginPath();
-        ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(124, 106, 240, 0.6)';
-        ctx.fill();
-      });
-      for (let i = 0; i < nodes.length; i++) {
-        for (let j = i + 1; j < nodes.length; j++) {
-          const dx = nodes[i].x - nodes[j].x;
-          const dy = nodes[i].y - nodes[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < CONNECTION_DIST) {
-            ctx.beginPath();
-            ctx.moveTo(nodes[i].x, nodes[i].y);
-            ctx.lineTo(nodes[j].x, nodes[j].y);
-            ctx.strokeStyle = `rgba(124, 106, 240, ${0.12 * (1 - dist / CONNECTION_DIST)})`;
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
-          }
-        }
+      ctx.clearRect(0,0,w,h);
+      nodes.forEach(n => { n.update(); ctx.beginPath(); ctx.arc(n.x,n.y,n.r,0,Math.PI*2); ctx.fillStyle='rgba(124,106,240,0.6)'; ctx.fill(); });
+      for(let i=0;i<nodes.length;i++) for(let j=i+1;j<nodes.length;j++) {
+        const dx=nodes[i].x-nodes[j].x, dy=nodes[i].y-nodes[j].y, dist=Math.sqrt(dx*dx+dy*dy);
+        if(dist<CONN_DIST) { ctx.beginPath(); ctx.moveTo(nodes[i].x,nodes[i].y); ctx.lineTo(nodes[j].x,nodes[j].y); ctx.strokeStyle=`rgba(124,106,240,${0.12*(1-dist/CONN_DIST)})`; ctx.lineWidth=0.5; ctx.stroke(); }
       }
       requestAnimationFrame(draw);
     }
     draw();
 
     // ===== FAQ Toggle =====
-    function toggleFaq(el) {
-      const item = el.parentElement;
-      item.classList.toggle('open');
+    function toggleFaq(el) { el.parentElement.classList.toggle('open'); }
+
+    // ===== i18n =====
+    let currentLang = 'en';
+    const translations = {
+      en: {
+        'nav-brand': 'BRAIN', 'nav-problem': 'Problem', 'nav-how': 'How It Works',
+        'nav-whitepaper': 'Whitepaper', 'nav-token': 'Token', 'nav-roadmap': 'Roadmap', 'nav-faq': 'FAQ',
+        'hero-badge': '✦ Community Owned AI',
+        'hero-line1': 'Your Knowledge', 'hero-line2': 'Shapes the Future of AI',
+        'hero-desc': 'BRAIN is not just another AI product. It is an AI ecosystem governed by its holders.<br>You contribute knowledge, vote on direction, and share the growth. AI serves the community — not shareholders.',
+        'hero-cta1': 'How It Works ↓', 'hero-cta2': 'Read Whitepaper',
+        'stat-supply': 'Total Supply', 'stat-community': 'Community Allocation', 'stat-driven': 'Community Driven',
+        'problem-label': 'Problem & Solution',
+        'problem-bad-title': 'Who Does AI Serve Today?',
+        'problem-bad-1': 'Big companies decide what AI learns',
+        'problem-bad-2': 'Users contribute data but get nothing back',
+        'problem-bad-3': 'Fees keep rising — you have no say',
+        'problem-bad-4': 'AI evolves for shareholder profit, not users',
+        'problem-good-title': 'The BRAIN Answer',
+        'problem-good-1': 'Hold $BRAIN = community governance rights',
+        'problem-good-2': 'You contribute knowledge, you get rewarded',
+        'problem-good-3': 'AI direction decided by community vote',
+        'problem-good-4': 'Value flows back to holders, not shareholders',
+        'how-label': 'How It Works', 'how-title': 'Four Steps to Shape AI',
+        'how-desc': 'From buying tokens to influencing AI development — everything is transparent and on-chain.',
+        'step1-title': 'Hold $BRAIN', 'step1-desc': 'Buy $BRAIN on a decentralized exchange and become a community member.',
+        'step2-title': 'Submit Knowledge', 'step2-desc': 'Spend a small amount of $BRAIN to submit topics, articles, tutorials, or answers.',
+        'step3-title': 'Community Voting', 'step3-desc': 'All submissions are voted on by holders. Quality content enters the knowledge base.',
+        'step4-title': 'AI Evolves', 'step4-desc': 'Community-curated knowledge continuously enriches the AI for everyone.',
+        'wp-label': 'Whitepaper', 'wp-title': 'The Vision', 'wp-subtitle': 'A decentralized AI ecosystem governed by its community.',
+        'wp-mission-title': 'Mission',
+        'wp-mission-text': 'To build the first truly community-owned AI — where every holder has a voice in what the AI learns, how it behaves, and where it evolves.',
+        'wp-mission-1': 'Democratize AI development and governance',
+        'wp-mission-2': 'Reward knowledge contributors fairly',
+        'wp-mission-3': 'Create sustainable value through real utility',
+        'wp-mech-title': 'Core Mechanism',
+        'wp-mech-text': '$BRAIN token holders drive the AI roadmap. Submit knowledge → community votes → AI ingests quality content → contributors earn rewards.',
+        'wp-mech-1': 'Token-gated submission & voting system',
+        'wp-mech-2': 'Curated knowledge base powers AI responses',
+        'wp-mech-3': '50% of usage fees burned, 50% to contributors',
+        'wp-future-title': 'Future Vision',
+        'wp-future-text': 'Phase 4 brings full on-chain governance: holders vote on AI model selection, behavior parameters, treasury allocation, and partnerships.',
+        'wp-future-1': 'On-chain proposal and voting system',
+        'wp-future-2': 'AI model fine-tuning driven by community',
+        'wp-future-3': 'Decentralized treasury management',
+        'wp-econ-title': 'Token Economics',
+        'wp-econ-text': 'Fixed supply of 1 billion $BRAIN. Deflationary by design — every AI interaction burns tokens.',
+        'wp-econ-1': '1B total supply, never minted again',
+        'wp-econ-2': 'Deflationary burn mechanism on each use',
+        'wp-econ-3': 'Team tokens locked 12 months',
+        'token-label': 'Tokenomics', 'token-title': 'Allocation',
+        'token-subtitle': 'Total supply: 1,000,000,000. Every AI call burns tokens — continuous deflation.',
+        'token-bar1': 'Community', 'token-bar2': 'Liquidity', 'token-bar3': 'Treasury', 'token-bar4': 'Team', 'token-bar5': 'Airdrop',
+        'token-desc-title': 'Deflation Model',
+        'token-desc-text': 'Each AI call burns <strong>50%</strong> of the tokens spent. The other 50% rewards contributors and voters.',
+        'token-detail-1-label': '40% Community', 'token-detail-1-desc': 'Earned through contributions, voting, governance',
+        'token-detail-2-label': '25% Liquidity', 'token-detail-2-desc': 'Ensures trading depth and price stability',
+        'token-detail-3-label': '20% Treasury', 'token-detail-3-desc': 'Community grants, AI dev, ecosystem growth',
+        'token-detail-4-label': '10% Team', 'token-detail-4-desc': '12-month lock, linear monthly unlock',
+        'token-detail-5-label': '5% Airdrop', 'token-detail-5-desc': 'Early community and active contributor rewards',
+        'roadmap-label': 'Roadmap', 'roadmap-title': 'From Seed to Self-Governance',
+        'roadmap-subtitle': "A community-owned AI doesn't happen overnight.",
+        'roadmap-p1-phase': 'Phase 1 · In Progress', 'roadmap-p1-title': 'Community Launch',
+        'roadmap-p1-desc': 'Token deployment, official website, Telegram Bot setup, initial community building.',
+        'roadmap-p1-status': 'In Progress',
+        'roadmap-p2-phase': 'Phase 2 · Coming Soon', 'roadmap-p2-title': 'Knowledge Submission System',
+        'roadmap-p2-desc': 'Full content submission and voting system live. Token holders submit and curate.',
+        'roadmap-p2-status': 'Next Step',
+        'roadmap-p3-phase': 'Phase 3', 'roadmap-p3-title': 'AI Model Integration',
+        'roadmap-p3-desc': 'Integrate knowledge base with AI. Answers reference community-verified sources.',
+        'roadmap-p3-status': 'Planned',
+        'roadmap-p4-phase': 'Phase 4', 'roadmap-p4-title': 'Decentralized Governance',
+        'roadmap-p4-desc': 'Full on-chain voting. Model selection, treasury, partnerships — all community decided.',
+        'roadmap-p4-status': 'Planned',
+        'faq-label': 'FAQ', 'faq-title': 'Frequently Asked Questions',
+        'faq-subtitle': 'Everything you need to know about BRAIN.',
+        'faq1-q': 'What can $BRAIN be used for?',
+        'faq1-a': 'Holding $BRAIN gives you governance rights, ability to submit knowledge, earn rewards, and future AI access.',
+        'faq2-q': 'Where does the AI come from? Do I need to train my own?',
+        'faq2-a': 'We use mature open-source LLMs (DeepSeek, Qwen) enhanced by community knowledge. No self-training needed.',
+        'faq3-q': 'How do I participate in governance?',
+        'faq3-a': 'Hold $BRAIN and you can vote on learning topics, curate content, and in Phase 4, propose and vote on AI parameters.',
+        'faq4-q': 'What gives $BRAIN its value?',
+        'faq4-a': 'Supply and demand. Active community = more buyers. Each AI call burns tokens. Value grows with ecosystem health.',
+        'faq5-q': 'How do I buy $BRAIN?',
+        'faq5-a': 'After deployment, buy via pump.fun or Raydium with a Solana wallet. Links on website and Telegram.',
+        'faq6-q': 'Is this a rug pull?',
+        'faq6-a': 'No. Team tokens locked 12 months. Liquidity secured. Major decisions via community vote. Our success is your trust.',
+        'footer-tagline': 'Community Owned AI · You contribute knowledge, you share the growth',
+        'footer-copy': '© 2026 BRAIN. This is just the beginning.',
+      },
+      zh: {
+        'nav-brand': 'BRAIN', 'nav-problem': '问题', 'nav-how': '运作方式',
+        'nav-whitepaper': '白皮书', 'nav-token': '代币', 'nav-roadmap': '路线图', 'nav-faq': '常见问题',
+        'hero-badge': '✦ 社区拥有的 AI',
+        'hero-line1': '你的知识', 'hero-line2': '决定 AI 的未来',
+        'hero-desc': 'BRAIN 不是另一个 AI 产品。它是一个由持有者共同治理的 AI 生态。<br>你贡献知识、投票方向、分享成长。AI 为社区服务，不为股东。',
+        'hero-cta1': '了解运作方式 ↓', 'hero-cta2': '阅读白皮书',
+        'stat-supply': '总供应量', 'stat-community': '社区分配', 'stat-driven': '社区驱动',
+        'problem-label': '问题 & 解决方案',
+        'problem-bad-title': '今天的 AI 为谁服务？',
+        'problem-bad-1': '大公司决定 AI 学什么',
+        'problem-bad-2': '用户贡献数据但无回报',
+        'problem-bad-3': '收费越来越高，你无话可说',
+        'problem-bad-4': 'AI 为股东利益进化，而非用户',
+        'problem-good-title': 'BRAIN 的答案',
+        'problem-good-1': '持有 $BRAIN = 社区治理权',
+        'problem-good-2': '你贡献知识，你获得回报',
+        'problem-good-3': 'AI 方向由社区投票决定',
+        'problem-good-4': '价值回归持有者，而非股东',
+        'how-label': '运作方式', 'how-title': '四步参与 AI 进化',
+        'how-desc': '从购买代币到影响 AI 方向，全过程透明、链上记录。',
+        'step1-title': '持有 $BRAIN', 'step1-desc': '在去中心化交易所购买 $BRAIN，成为社区成员。',
+        'step2-title': '提交知识', 'step2-desc': '消耗少量 $BRAIN 提交你希望 AI 学习的内容。',
+        'step3-title': '社区投票', 'step3-desc': '所有提交由持有者投票筛选。优质内容进入知识库。',
+        'step4-title': 'AI 持续进化', 'step4-desc': '社区筛选的知识不断丰富 AI，所有人共享更好的 AI。',
+        'wp-label': '白皮书', 'wp-title': '愿景', 'wp-subtitle': '一个由社区治理的去中心化 AI 生态。',
+        'wp-mission-title': '使命',
+        'wp-mission-text': '打造第一个真正由社区拥有的 AI——每位持有者对 AI 学什么、怎么学、往哪进化都有发言权。',
+        'wp-mission-1': '将 AI 开发和治理权交给社区',
+        'wp-mission-2': '公平地奖励知识贡献者',
+        'wp-mission-3': '通过真实效用创造可持续价值',
+        'wp-mech-title': '核心机制',
+        'wp-mech-text': '$BRAIN 持有者驱动 AI 路线图。提交知识 → 社区投票 → AI 吸收优质内容 → 贡献者获得奖励。',
+        'wp-mech-1': '代币门控的提交与投票系统',
+        'wp-mech-2': '精选知识库驱动 AI 回答',
+        'wp-mech-3': '50% 使用费销毁，50% 奖励贡献者',
+        'wp-future-title': '未来愿景',
+        'wp-future-text': '第四阶段实现完整的链上治理：持有者投票决定模型选择、行为参数、资金分配和生态合作。',
+        'wp-future-1': '链上提案和投票系统',
+        'wp-future-2': '社区驱动的 AI 模型微调',
+        'wp-future-3': '去中心化的资金管理',
+        'wp-econ-title': '代币经济',
+        'wp-econ-text': '固定供应量 10 亿枚。通缩设计——每次 AI 调用销毁代币。',
+        'wp-econ-1': '10 亿总供应，永不增发',
+        'wp-econ-2': '每次使用通缩销毁机制',
+        'wp-econ-3': '团队代币锁定 12 个月',
+        'token-label': '代币经济', 'token-title': '分配方案',
+        'token-subtitle': '总供应量 10 亿枚。每次 AI 调用都销毁代币——持续通缩。',
+        'token-bar1': '社区分配', 'token-bar2': '流动性池', 'token-bar3': 'Treasury', 'token-bar4': '团队', 'token-bar5': '空投',
+        'token-desc-title': '通缩模型',
+        'token-desc-text': '每次 AI 调用消耗的代币中<strong>50% 永久销毁</strong>，50% 奖励贡献者和投票者。',
+        'token-detail-1-label': '40% 社区分配', 'token-detail-1-desc': '通过贡献知识、投票、参与治理获得',
+        'token-detail-2-label': '25% 流动性池', 'token-detail-2-desc': '确保交易深度和价格稳定',
+        'token-detail-3-label': '20% Treasury', 'token-detail-3-desc': '社区资助、AI开发、生态建设',
+        'token-detail-4-label': '10% 团队', 'token-detail-4-desc': '锁定12个月，每月线性解锁',
+        'token-detail-5-label': '5% 空投', 'token-detail-5-desc': '早期社区和活跃贡献者激励',
+        'roadmap-label': '路线图', 'roadmap-title': '从萌芽到自治',
+        'roadmap-subtitle': '社区拥有的 AI 不是一蹴而就的。',
+        'roadmap-p1-phase': '第一阶段 · 进行中', 'roadmap-p1-title': '社区启动',
+        'roadmap-p1-desc': '代币部署、官方网站上线、Telegram Bot 搭建、初始社区建设。',
+        'roadmap-p1-status': '进行中',
+        'roadmap-p2-phase': '第二阶段 · 即将到来', 'roadmap-p2-title': '知识提交系统',
+        'roadmap-p2-desc': '完整的内容提交和投票功能上线。持有人提交，社区筛选。',
+        'roadmap-p2-status': '下一步',
+        'roadmap-p3-phase': '第三阶段', 'roadmap-p3-title': 'AI 模型集成',
+        'roadmap-p3-desc': '社区知识库接入 AI。回答引用社区验证的来源。',
+        'roadmap-p3-status': '规划中',
+        'roadmap-p4-phase': '第四阶段', 'roadmap-p4-title': '去中心化治理',
+        'roadmap-p4-desc': '完整链上投票。模型选择、资金、合作——社区决定。',
+        'roadmap-p4-status': '规划中',
+        'faq-label': '常见问题', 'faq-title': '常见问题',
+        'faq-subtitle': '关于 BRAIN 你可能想知道的。',
+        'faq1-q': '$BRAIN 可以用来做什么？',
+        'faq1-a': '持有 $BRAIN 可获得治理权、提交知识、参与投票获得奖励，以及未来 AI 服务的优先访问权。',
+        'faq2-q': 'AI 模型从哪来？需要自己训练吗？',
+        'faq2-a': '使用成熟的开源大模型（DeepSeek、Qwen）配合社区知识库增强。无需自己训练。',
+        'faq3-q': '我如何参与治理？',
+        'faq3-a': '持有 $BRAIN 即可。可投票 AI 学习主题、筛选内容，Phase 4 后可提案投票 AI 参数等。',
+        'faq4-q': '$BRAIN 的价值从何而来？',
+        'faq4-a': '供需关系。社区越活跃买币人越多，每次 AI 调用销毁代币。价值随生态成长。',
+        'faq5-q': '如何购买 $BRAIN？',
+        'faq5-a': '部署后通过 pump.fun 或 Raydium 用 Solana 钱包购买。链接将在官网和 TG 群公布。',
+        'faq6-q': '会 rug pull 吗？',
+        'faq6-a': '不会。团队代币锁定 12 个月，流动性安全，重大决策社区投票。项目成功依赖你的信任。',
+        'footer-tagline': '社区拥有的 AI · 你贡献知识，你分享成长',
+        'footer-copy': '© 2026 BRAIN. 这只是开始。',
+      }
+    };
+
+    function applyLang(lang) {
+      currentLang = lang;
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[lang] && translations[lang][key] !== undefined) {
+          el.innerHTML = translations[lang][key];
+        }
+      });
+      document.getElementById('langToggle').textContent = lang === 'en' ? '中文' : 'English';
+      document.documentElement.lang = lang;
     }
+
+    function toggleLang() {
+      applyLang(currentLang === 'en' ? 'zh' : 'en');
+    }
+
+    // Detect browser language
+    const userLang = (navigator.language || navigator.userLanguage || 'en').substring(0, 2);
+    applyLang(userLang === 'zh' ? 'zh' : 'en');
   </script>
 </body>
 </html>

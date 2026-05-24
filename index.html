@@ -692,32 +692,34 @@
     </div>
   </section>
 
-  <!-- ===== Calculator ===== -->
-  <section id="calc">
-    <div class="container">
-      <div class="calc-box fade-up">
-        <h3 data-i18n="calc-title">📊 Estimate Your Earning Potential</h3>
-        <div class="calc-row">
-          <label data-i18n="calc-label1">Knowledge submissions / month</label>
-          <input type="number" id="calcSubs" value="5" min="0" oninput="calcEarnings()">
+  <!-- ===== Get Started ===== -->
+  <section id="get-started" style="background:var(--bg);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+    <div class="container" style="text-align:center;">
+      <div class="section-label fade-up" data-i18n="start-label">Get Started</div>
+      <h2 class="section-title fade-up" data-i18n="start-title">Join the <span class="highlight">Community</span></h2>
+      <p class="section-sub fade-up" style="margin:0 auto 48px;text-align:center;" data-i18n="start-sub">Three simple steps to become part of the MIND AI ecosystem.</p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:960px;margin:0 auto;">
+        <div class="fade-up" style="padding:40px 24px;border-radius:16px;background:var(--surface);border:1px solid var(--border);text-align:center;">
+          <div style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#7c5cf0,#a855f7);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:1.5rem;font-weight:900;">1</div>
+          <h4 style="font-size:1.1rem;margin-bottom:8px;" data-i18n="start-1-title">Get $MINDAI</h4>
+          <p style="color:var(--text2);font-size:0.88rem;line-height:1.7;" data-i18n="start-1-desc">Buy $MINDAI on pump.fun. Everyone buys at the same bonding curve price — no pre-sale, no insider deals.</p>
+          <a href="https://pump.fun/coin/9xSirb8EkpPg1EsUPBeeeM9GYS7tnZZZXLbAMScJpump" target="_blank" style="display:inline-block;margin-top:16px;padding:8px 20px;border-radius:8px;background:rgba(124,92,240,0.1);color:var(--primary2);font-weight:600;font-size:0.85rem;text-decoration:none;border:1px solid rgba(124,92,240,0.2);">Buy on pump.fun →</a>
         </div>
-        <div class="calc-row">
-          <label data-i18n="calc-label2">Average acceptance rate (%)</label>
-          <input type="number" id="calcRate" value="40" min="0" max="100" oninput="calcEarnings()">
+        <div class="fade-up" style="padding:40px 24px;border-radius:16px;background:var(--surface);border:1px solid var(--border);text-align:center;">
+          <div style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#7c5cf0,#a855f7);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:1.5rem;font-weight:900;">2</div>
+          <h4 style="font-size:1.1rem;margin-bottom:8px;" data-i18n="start-2-title">Join the Group</h4>
+          <p style="color:var(--text2);font-size:0.88rem;line-height:1.7;" data-i18n="start-2-desc">Connect with the community on Telegram. Discuss ideas, ask questions, and stay updated on development progress.</p>
+          <a href="https://t.me/mindaitoken" target="_blank" style="display:inline-block;margin-top:16px;padding:8px 20px;border-radius:8px;background:rgba(124,92,240,0.1);color:var(--primary2);font-weight:600;font-size:0.85rem;text-decoration:none;border:1px solid rgba(124,92,240,0.2);">Join Telegram →</a>
         </div>
-        <div class="calc-row">
-          <label data-i18n="calc-label3">Your voting power (1000s $MINDAI held)</label>
-          <input type="number" id="calcVote" value="5" min="0" oninput="calcEarnings()">
-        </div>
-        <div class="calc-result">
-          <div data-i18n="calc-result-label">Estimated monthly earnings</div>
-          <div class="big"><span id="calcResult">2,400</span> $MINDAI</div>
-          <div class="note" data-i18n="calc-note">Based on community average + your activity level. The more you contribute, the more you earn.</div>
+        <div class="fade-up" style="padding:40px 24px;border-radius:16px;background:var(--surface);border:1px solid var(--border);text-align:center;">
+          <div style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#7c5cf0,#a855f7);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:1.5rem;font-weight:900;">3</div>
+          <h4 style="font-size:1.1rem;margin-bottom:8px;" data-i18n="start-3-title">Follow Development</h4>
+          <p style="color:var(--text2);font-size:0.88rem;line-height:1.7;" data-i18n="start-3-desc">Follow us on X for announcements and check mindtoken.fun for the latest updates on the AI model launch.</p>
+          <a href="https://x.com/MindTokenSOL" target="_blank" style="display:inline-block;margin-top:16px;padding:8px 20px;border-radius:8px;background:rgba(124,92,240,0.1);color:var(--primary2);font-weight:600;font-size:0.85rem;text-decoration:none;border:1px solid rgba(124,92,240,0.2);">Follow @MindTokenSOL →</a>
         </div>
       </div>
     </div>
   </section>
-
   <!-- ===== Tokenomics ===== -->
   <section id="tokenomics">
     <div class="container">
@@ -1034,20 +1036,7 @@
 
     setTimeout(observeFade, 500);
 
-    // ===== Token Calculator =====
-    function calcEarnings() {
-      const subs = parseInt(document.getElementById('calcSubs').value) || 0;
-      const rate = parseInt(document.getElementById('calcRate').value) || 0;
-      const vote = parseInt(document.getElementById('calcVote').value) || 0;
-      // Submissions: each accepted earns avg 200 $MINDAI
-      const fromSubs = subs * (rate / 100) * 200;
-      // Voting: base rewards
-      const fromVote = vote * 40;
-      // Use the AI: bonus multiplier
-      const total = Math.round(fromSubs + fromVote);
-      document.getElementById('calcResult').textContent = Math.max(0, total).toLocaleString();
-    }
-    setTimeout(calcEarnings, 100);
+
 
     // ===== Mobile Toggle =====
     function toggleMobile() {
@@ -1096,13 +1085,8 @@
         'access-2-price': 'Earn $MINDAI',
         'access-3-title': 'Governance Vote', 'access-3-desc': '\$MINDAI holders vote on knowledge priorities, model direction, and community initiatives.',
         'access-3-price': 'Hold to vote',
-        'calc-title': '📊 Estimate Your Earning Potential',
-        'calc-label1': 'Knowledge submissions / month',
-        'calc-label2': 'Average acceptance rate (%)',
-        'calc-label3': 'Your voting power (1000s $MINDAI held)',
-        'calc-result-label': 'Estimated monthly earnings',
-        'calc-note': 'Based on community average + your activity level.',
-        'token-label': 'Tokenomics', 'token-title': '1 Billion $MINDAI. <span class="highlight">Never Minted Again.</span>',
+                                'calc-label3': 'Your voting power (1000s $MINDAI held)',
+                        'token-label': 'Tokenomics', 'token-title': '1 Billion $MINDAI. <span class="highlight">Never Minted Again.</span>',
         'token-sub': '1,000,000,000 $MINDAI. Fixed supply. Pay $MINDAI to use the AI.',
         'alloc-1': 'Community (400M)', 'alloc-2': 'Liquidity (250M)', 'alloc-3': 'Treasury (200M)', 'alloc-4': 'Team (150M)', 'alloc-5': 'Airdrop (50M)',
         'token-detail-title': 'Fair Launch Model',

@@ -200,13 +200,21 @@
     .btn-ghost:hover { color: var(--text); }
 
     .hero-metrics {
-      display: flex; gap: 40px; margin-top: 56px;
+      display: flex; gap: 24px; margin-top: 56px;
       padding-top: 32px; border-top: 1px solid var(--border);
     }
-    .metric .val { font-size: 1.8rem; font-weight: 800; }
-    .metric .lbl { font-size: 0.8rem; color: var(--text3); margin-top: 2px; }
+    .hero-metrics .metric {
+      flex: 1; text-align: center;
+      padding: 16px 12px;
+      background: rgba(255,255,255,0.02);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+    .metric .val { font-size: 1.8rem; font-weight: 800; line-height: 1.2; }
+    .metric .lbl { font-size: 0.78rem; color: var(--text3); margin-top: 6px; line-height: 1.4; }
     .metric .val.green { color: var(--green); }
     .metric .val.accent { color: var(--primary2); }
+    .metric .val.emoji { font-size: 2rem; line-height: 1; }
 
     /* ===== The Pitch ===== */
     #pitch { background: linear-gradient(180deg, var(--bg) 0%, var(--bg2) 50%, var(--bg) 100%); }
@@ -562,7 +570,7 @@
         </div>
         <div class="hero-metrics">
           <div class="metric"><div class="val green">1B</div><div class="lbl" data-i18n="m1">Total Supply ($MINDAI)</div></div>
-          <div class="metric"><div class="val green" style="font-size:1.2rem;">✅</div><div class="lbl" data-i18n="m2">Zero GPU Required</div></div>
+          <div class="metric"><div class="val emoji">✅</div><div class="lbl" data-i18n="m2">Zero GPU Required</div></div>
           <div class="metric"><div class="val green">∞</div><div class="lbl" data-i18n="m3">Knowledge Inputs Possible</div></div>
         </div>
         <div style="margin-top:24px;display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">

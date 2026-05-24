@@ -292,13 +292,13 @@
 
     /* ===== Model Access ===== */
     #model-access { background: linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%); }
-    .access-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .access-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
     .access-card {
       padding: 32px 24px; border-radius: 16px;
       background: var(--surface); border: 1px solid var(--border);
       text-align: center; transition: all 0.3s;
     }
-    .access-card:hover { border-color: var(--border2); transform: translateY(-3px); }
+    ..access-card:hover { border-color: var(--border2); transform: translateY(-3px); border-color: var(--primary); }
     .access-card .emoji { font-size: 2rem; margin-bottom: 12px; }
     .access-card h4 { font-size: 1.05rem; margin-bottom: 8px; }
     .access-card p { color: var(--text2); font-size: 0.85rem; line-height: 1.6; }
@@ -1091,11 +1091,11 @@
         'access-label': 'Token-Gated AI', 'access-title': 'You Can Use The AI With <span class="highlight">$MINDAI</span>',
         'access-sub': 'Holders get access. Contributors earn access. Everyone helps decide.',
         'access-1-title': 'Basic Query', 'access-1-desc': 'Ask questions powered by community knowledge and self-hosted open-source models. Token-gated access.',
-        'access-1-price': '1 $MINDAI / query',
+        'access-1-price': 'Token-gated',
         'access-2-title': 'Deep Research', 'access-2-desc': 'All community submissions are indexed, voted on, and stored in the knowledge base.',
-        'access-2-price': '10 $MINDAI / report',
+        'access-2-price': 'Earn $MINDAI',
         'access-3-title': 'Governance Vote', 'access-3-desc': '\$MINDAI holders vote on knowledge priorities, model direction, and community initiatives.',
-        'access-3-price': 'Hold 1000+ $MINDAI',
+        'access-3-price': 'Hold to vote',
         'calc-title': '📊 Estimate Your Earning Potential',
         'calc-label1': 'Knowledge submissions / month',
         'calc-label2': 'Average acceptance rate (%)',
@@ -1200,11 +1200,11 @@
         'access-label': '代币门控 AI', 'access-title': '用 <span class="highlight">$MINDAI</span> 使用 AI',
         'access-sub': '持有者获得使用权。贡献者赚取使用权。人人参与决策。',
         'access-1-title': '基础问答', 'access-1-desc': '提出任何问题。社区知识 + 自建开源模型。',
-        'access-1-price': '1 $MINDAI / 次',
+        'access-1-price': '代币门控',
         'access-2-title': '深度研究', 'access-2-desc': '所有社区提交的知识经过投票筛选和索引，构建知识库。',
-        'access-2-price': '10 $MINDAI / 份',
+        'access-2-price': '赚取 $MINDAI',
         'access-3-title': '治理投票', 'access-3-desc': '\$MINDAI 持有者投票决定知识优先级、模型方向和社区事务。',
-        'access-3-price': '持有 1000+ $MINDAI',
+        'access-3-price': '持有即投票',
         'calc-title': '📊 预估你的收入潜力',
         'calc-label1': '每月提交知识数',
         'calc-label2': '平均通过率 (%)',

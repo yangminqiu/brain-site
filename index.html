@@ -1227,9 +1227,8 @@
       applyLang(currentLang === 'en' ? 'zh' : 'en');
     }
 
-    // Auto-detect language
-    const userLang = (navigator.language || 'en').substring(0, 2);
-    applyLang(userLang === 'zh' ? 'zh' : 'en');
+    // Default: English. Click button to switch to Chinese.
+    applyLang('en');
 
     // ===== Toast helper =====
     function showToast(msg) {

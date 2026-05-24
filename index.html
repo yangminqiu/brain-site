@@ -309,40 +309,6 @@
     }
 
     /* ===== Calculator ===== */
-    #calc {
-      background: var(--bg); border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-    }
-    .calc-box {
-      max-width: 600px; margin: 0 auto;
-      padding: 36px; border-radius: 20px;
-      background: var(--surface); border: 1px solid var(--border);
-    }
-    .calc-box h3 { text-align: center; font-size: 1.3rem; margin-bottom: 24px; }
-    .calc-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
-    .calc-row label { color: var(--text2); font-size: 0.9rem; }
-    .calc-row input {
-      width: 160px; padding: 8px 12px; border-radius: 8px;
-      border: 1px solid var(--border); background: var(--bg);
-      color: var(--text); font-size: 0.95rem; font-family: var(--font);
-      text-align: center;
-    }
-    .calc-row input:focus { outline: none; border-color: var(--primary); }
-    .calc-result {
-      margin-top: 20px; padding: 20px; border-radius: 12px;
-      text-align: center; background: rgba(124,92,240,0.06);
-      border: 1px solid rgba(124,92,240,0.1);
-    }
-    .calc-result .big { font-size: 2rem; font-weight: 800; color: var(--primary2); }
-    .calc-result .note { font-size: 0.82rem; color: var(--text3); margin-top: 4px; }
-
-    /* ===== Whitepaper ===== */
-    #whitepaper { background: var(--bg2); }
-    .wp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
-    .wp-sect {
-      padding: 32px; border-radius: 16px;
-      background: var(--surface); border: 1px solid var(--border);
-    }
     .wp-sect h3 { font-size: 1.2rem; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
     .wp-sect p { color: var(--text2); font-size: 0.9rem; line-height: 1.8; margin-bottom: 10px; }
     .wp-sect ul { list-style: none; }
@@ -1085,7 +1051,6 @@
         'access-2-price': 'Earn $MINDAI',
         'access-3-title': 'Governance Vote', 'access-3-desc': '\$MINDAI holders vote on knowledge priorities, model direction, and community initiatives.',
         'access-3-price': 'Hold to vote',
-                                'calc-label3': 'Your voting power (1000s $MINDAI held)',
                         'token-label': 'Tokenomics', 'token-title': '1 Billion $MINDAI. <span class="highlight">Never Minted Again.</span>',
         'token-sub': '1,000,000,000 $MINDAI. Fixed supply. Pay $MINDAI to use the AI.',
         'alloc-1': 'Community (400M)', 'alloc-2': 'Liquidity (250M)', 'alloc-3': 'Treasury (200M)', 'alloc-4': 'Team (150M)', 'alloc-5': 'Airdrop (50M)',
@@ -1192,7 +1157,6 @@
         'calc-title': '📊 预估你的收入潜力',
         'calc-label1': '每月提交知识数',
         'calc-label2': '平均通过率 (%)',
-        'calc-label3': '你持有的投票权 (千枚 $MINDAI)',
         'calc-result-label': '预估月收入',
         'calc-note': '基于社区平均值 + 你的活跃度。贡献越多，赚得越多。',
         'token-label': '代币经济', 'token-title': '10 亿枚 $MINDAI。<span class="highlight">永不增发。</span>',

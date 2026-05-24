@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BRAIN — The Token That Pays You To Think</title>
+  <meta name="description" content="BRAIN is a community-owned AI token. Contribute knowledge, earn rewards, govern the AI. No GPU farms. No VCs. Just collective intelligence.">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    :root {
+      --bg: #0b0b12;
+      --bg2: #111122;
+      --surface: #16162a;
+      --surface2: #1c1c35;
+      --border: rgba(120, 100, 240, 0.12);
+      --border2: rgba(120, 100, 240, 0.25);
+      --primary: #7c5cf0;
+      --primary2: #9b7cf5;
+      --purple: #a855f7;
+      --pink: #f472b6;
+      --orange: #fb923c;
+      --green: #22c55e;
+      --red: #ef4444;
+      --text: #e4e4ed;
+      --text2: #9999b3;
+      --text3: #666680;
+      --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+    a { color: var(--primary2); text-decoration: none; }
+    a:hover { color: #b8a0ff; }
+
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+    /* ===== Scan Line Effect ===== */
+    body::after {
+      content: '';
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent, transparent 2px,
+        rgba(255,255,255,0.008) 2px, rgba(255,255,255,0.008) 4px
+      );
+      pointer-events: none; z-index: 9999;
+    }
+
+    /* ===== Particle BG ===== */
+    #particle-canvas {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 0; pointer-events: none; opacity: 0.25;
+    }
+
+    /* ===== Nav ===== */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 14px 0;
+      background: rgba(11,11,18,0.88);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      transition: background 0.3s;
+    }
+    nav .container {
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo {
+      font-size: 1.3rem; font-weight: 800;
+      background: linear-gradient(135deg, var(--primary), var(--pink));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
+    }
+    .logo-sub { font-size: 0.7rem; color: var(--text3); display: block; margin-top: 0; font-weight: 400; -webkit-text-fill-color: var(--text3); }
+    .nav-right { display: flex; align-items: center; gap: 20px; }
+    .nav-links { display: flex; gap: 20px; }
+    .nav-links a { color: var(--text2); font-size: 0.85rem; transition: color 0.2s; position: relative; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: -4px; left: 0; right: 0;
+      height: 1px; background: var(--primary); transform: scaleX(0);
+      transition: transform 0.2s;
+    }
+    .nav-links a:hover::after { transform: scaleX(1); }
+    .lang-btn {
+      padding: 5px 12px; border-radius: 6px;
+      border: 1px solid var(--border); background: var(--surface);
+      color: var(--text2); font-size: 0.8rem; cursor: pointer;
+      transition: all 0.2s; font-weight: 600;
+    }
+    .lang-btn:hover { border-color: var(--border2); color: var(--text); }
+    .mobile-toggle {
+      display: none; background: none; border: none; color: var(--text);
+      font-size: 1.5rem; cursor: pointer; padding: 4px;
+    }
+
+    /* ===== Section Common ===== */
+    section { position: relative; z-index: 1; padding: 100px 0; }
+    .section-label {
+      font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 2.5px; color: var(--primary); margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: 2.6rem; font-weight: 800; margin-bottom: 16px;
+      line-height: 1.2; letter-spacing: -0.5px;
+    }
+    .section-title .highlight {
+      background: linear-gradient(135deg, var(--primary), var(--pink));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .section-sub {
+      color: var(--text2); font-size: 1.05rem;
+      max-width: 600px; margin-bottom: 56px; line-height: 1.8;
+    }
+
+    /* ===== Hero ===== */
+    .hero {
+      min-height: 100vh; display: flex; align-items: center;
+      padding-top: 80px; position: relative;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; top: -20%; right: -10%;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(124,92,240,0.08) 0%, transparent 70%);
+      border-radius: 50%; pointer-events: none;
+    }
+    .hero-content { position: relative; max-width: 820px; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 14px; border-radius: 20px;
+      font-size: 0.78rem; font-weight: 600;
+      background: rgba(124,92,240,0.12);
+      color: var(--primary2);
+      border: 1px solid rgba(124,92,240,0.15);
+      margin-bottom: 28px;
+    }
+    .hero-badge .dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--green); animation: pulse-dot 2s infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+    .hero h1 {
+      font-size: 4.2rem; font-weight: 900; line-height: 1.08;
+      margin-bottom: 20px; letter-spacing: -1px;
+    }
+    .hero h1 .gradient {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--purple) 30%, var(--pink) 60%, var(--orange) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero p {
+      font-size: 1.15rem; color: var(--text2);
+      max-width: 640px; line-height: 1.9; margin-bottom: 36px;
+    }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 13px 28px; border-radius: 10px;
+      font-size: 0.95rem; font-weight: 700; border: none; cursor: pointer;
+      transition: all 0.25s; font-family: var(--font);
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--purple));
+      color: #fff;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(124,92,240,0.35);
+    }
+    .btn-outline {
+      background: transparent; color: var(--text);
+      border: 1px solid var(--border2);
+    }
+    .btn-outline:hover { border-color: var(--primary); background: rgba(124,92,240,0.06); }
+    .btn-ghost {
+      background: transparent; color: var(--text2);
+      border: none; padding: 13px 20px;
+    }
+    .btn-ghost:hover { color: var(--text); }
+
+    .hero-metrics {
+      display: flex; gap: 40px; margin-top: 56px;
+      padding-top: 32px; border-top: 1px solid var(--border);
+    }
+    .metric .val { font-size: 1.8rem; font-weight: 800; }
+    .metric .lbl { font-size: 0.8rem; color: var(--text3); margin-top: 2px; }
+    .metric .val.green { color: var(--green); }
+    .metric .val.accent { color: var(--primary2); }
+
+    /* ===== The Pitch ===== */
+    #pitch { background: linear-gradient(180deg, var(--bg) 0%, var(--bg2) 50%, var(--bg) 100%); }
+    .pitch-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+    .pitch-card {
+      padding: 36px; border-radius: 16px;
+      background: var(--surface); border: 1px solid var(--border);
+      transition: all 0.3s;
+    }
+    .pitch-card:hover { border-color: var(--border2); transform: translateY(-2px); }
+    .pitch-card.old { border-left: 3px solid var(--red); }
+    .pitch-card.new { border-left: 3px solid var(--green); }
+    .pitch-card .icon { font-size: 1.6rem; margin-bottom: 12px; }
+    .pitch-card h3 { font-size: 1.3rem; margin-bottom: 10px; }
+    .pitch-card p { color: var(--text2); font-size: 0.92rem; line-height: 1.7; }
+    .pitch-card ul { list-style: none; margin-top: 14px; }
+    .pitch-card ul li {
+      padding: 5px 0; color: var(--text2); font-size: 0.88rem;
+    }
+    .pitch-card.old ul li::before { content: "✗ "; color: var(--red); font-weight: 700; }
+    .pitch-card.new ul li::before { content: "✓ "; color: var(--green); font-weight: 700; }
+
+    /* ===== How It Works ===== */
+    .flow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    .flow-card {
+      padding: 28px 20px; border-radius: 14px;
+      background: var(--surface); border: 1px solid var(--border);
+      text-align: center; transition: all 0.3s; position: relative;
+    }
+    .flow-card:hover {
+      border-color: var(--border2); transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+    .flow-card .num {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--purple));
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 1rem; margin: 0 auto 14px;
+    }
+    .flow-card h4 { font-size: 1rem; margin-bottom: 6px; }
+    .flow-card p { color: var(--text2); font-size: 0.82rem; line-height: 1.6; }
+    .flow-arrow {
+      display: none; position: absolute; right: -14px; top: 50%;
+      transform: translateY(-50%); color: var(--text3);
+      font-size: 1.2rem;
+    }
+
+    /* ===== Tokenomics ===== */
+    #tokenomics { background: var(--bg2); }
+    .token-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+    .allocation-list { display: flex; flex-direction: column; gap: 12px; }
+    .alloc-item { display: flex; align-items: center; gap: 12px; }
+    .alloc-item .label { width: 100px; font-size: 0.85rem; color: var(--text2); text-align: right; flex-shrink: 0; }
+    .alloc-item .bar-track {
+      flex: 1; height: 24px; background: rgba(255,255,255,0.03);
+      border-radius: 12px; overflow: hidden; position: relative;
+    }
+    .alloc-item .bar-fill {
+      height: 100%; border-radius: 12px;
+      transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+      width: 0;
+    }
+    .alloc-item .pct { width: 44px; font-size: 0.85rem; font-weight: 700; color: var(--text); flex-shrink: 0; }
+
+    .token-details h3 { font-size: 1.4rem; margin-bottom: 12px; }
+    .token-details p { color: var(--text2); font-size: 0.92rem; line-height: 1.7; margin-bottom: 16px; }
+    .token-details .stat-row { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 20px; }
+    .token-details .stat-box {
+      flex: 1; min-width: 120px; padding: 16px; border-radius: 12px;
+      background: var(--surface); border: 1px solid var(--border);
+      text-align: center;
+    }
+    .token-details .stat-box .big { font-size: 1.3rem; font-weight: 800; color: var(--primary2); }
+    .token-details .stat-box .sm { font-size: 0.78rem; color: var(--text3); margin-top: 4px; }
+
+    /* ===== Model Access ===== */
+    #model-access { background: linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%); }
+    .access-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .access-card {
+      padding: 32px 24px; border-radius: 16px;
+      background: var(--surface); border: 1px solid var(--border);
+      text-align: center; transition: all 0.3s;
+    }
+    .access-card:hover { border-color: var(--border2); transform: translateY(-3px); }
+    .access-card .emoji { font-size: 2rem; margin-bottom: 12px; }
+    .access-card h4 { font-size: 1.05rem; margin-bottom: 8px; }
+    .access-card p { color: var(--text2); font-size: 0.85rem; line-height: 1.6; }
+    .access-card .price-tag {
+      display: inline-block; margin-top: 14px; padding: 4px 14px;
+      border-radius: 20px; font-size: 0.8rem; font-weight: 700;
+      background: rgba(124,92,240,0.12); color: var(--primary2);
+    }
+
+    /* ===== Calculator ===== */
+    #calc {
+      background: var(--bg); border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .calc-box {
+      max-width: 600px; margin: 0 auto;
+      padding: 36px; border-radius: 20px;
+      background: var(--surface); border: 1px solid var(--border);
+    }
+    .calc-box h3 { text-align: center; font-size: 1.3rem; margin-bottom: 24px; }
+    .calc-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    .calc-row label { color: var(--text2); font-size: 0.9rem; }
+    .calc-row input {
+      width: 160px; padding: 8px 12px; border-radius: 8px;
+      border: 1px solid var(--border); background: var(--bg);
+      color: var(--text); font-size: 0.95rem; font-family: var(--font);
+      text-align: center;
+    }
+    .calc-row input:focus { outline: none; border-color: var(--primary); }
+    .calc-result {
+      margin-top: 20px; padding: 20px; border-radius: 12px;
+      text-align: center; background: rgba(124,92,240,0.06);
+      border: 1px solid rgba(124,92,240,0.1);
+    }
+    .calc-result .big { font-size: 2rem; font-weight: 800; color: var(--primary2); }
+    .calc-result .note { font-size: 0.82rem; color: var(--text3); margin-top: 4px; }
+
+    /* ===== Whitepaper ===== */
+    #whitepaper { background: var(--bg2); }
+    .wp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+    .wp-sect {
+      padding: 32px; border-radius: 16px;
+      background: var(--surface); border: 1px solid var(--border);
+    }
+    .wp-sect h3 { font-size: 1.2rem; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+    .wp-sect p { color: var(--text2); font-size: 0.9rem; line-height: 1.8; margin-bottom: 10px; }
+    .wp-sect ul { list-style: none; }
+    .wp-sect ul li {
+      padding: 4px 0; color: var(--text2); font-size: 0.88rem;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+    }
+    .wp-sect ul li::before { content: "→ "; color: var(--primary); }
+
+    /* ===== Roadmap ===== */
+    .road-timeline { position: relative; padding-left: 32px; }
+    .road-timeline::before {
+      content: ''; position: absolute; left: 11px; top: 8px; bottom: 8px;
+      width: 2px; background: linear-gradient(to bottom, var(--primary), transparent);
+    }
+    .road-item { position: relative; padding-bottom: 40px; }
+    .road-item:last-child { padding-bottom: 0; }
+    .road-item::before {
+      content: ''; position: absolute; left: -25px; top: 6px;
+      width: 12px; height: 12px; border-radius: 50%;
+      background: var(--surface2); border: 2px solid var(--primary);
+    }
+    .road-item.done::before { background: var(--green); border-color: var(--green); }
+    .road-item.now::before { background: var(--primary); box-shadow: 0 0 8px rgba(124,92,240,0.5); }
+    .road-phase { font-size: 0.75rem; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; }
+    .road-item h4 { font-size: 1.1rem; margin: 4px 0 6px; }
+    .road-item p { color: var(--text2); font-size: 0.88rem; line-height: 1.7; }
+    .road-tag {
+      display: inline-block; margin-top: 8px; padding: 2px 10px;
+      border-radius: 8px; font-size: 0.72rem; font-weight: 600;
+    }
+    .road-tag.live { background: rgba(34,197,94,0.12); color: var(--green); }
+    .road-tag.build { background: rgba(124,92,240,0.12); color: var(--primary2); }
+    .road-tag.next { background: rgba(255,255,255,0.04); color: var(--text3); }
+
+    /* ===== FAQ ===== */
+    .faq-list { max-width: 740px; margin: 0 auto; }
+    .faq-q {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 18px 0; cursor: pointer; font-size: 1rem; font-weight: 600;
+      color: var(--text); user-select: none;
+      border-bottom: 1px solid var(--border);
+    }
+    .faq-q .arr {
+      transition: transform 0.3s; font-size: 0.9rem; color: var(--primary2);
+    }
+    .faq-item.open .faq-q .arr { transform: rotate(180deg); }
+    .faq-a {
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.35s ease, padding 0.35s ease;
+      color: var(--text2); line-height: 1.8; font-size: 0.9rem;
+    }
+    .faq-item.open .faq-a { max-height: 400px; padding: 8px 0 18px; }
+
+    /* ===== Footer ===== */
+    footer {
+      position: relative; z-index: 1;
+      padding: 56px 0 40px;
+      border-top: 1px solid var(--border);
+    }
+    .footer-grid {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px;
+      margin-bottom: 40px;
+    }
+    .footer-brand .logo { font-size: 1.5rem; display: block; margin-bottom: 8px; }
+    .footer-brand p { color: var(--text3); font-size: 0.85rem; max-width: 280px; line-height: 1.6; }
+    .footer-col h5 { font-size: 0.85rem; font-weight: 700; margin-bottom: 14px; color: var(--text); }
+    .footer-col a {
+      display: block; padding: 4px 0; color: var(--text3); font-size: 0.85rem;
+      transition: color 0.2s;
+    }
+    .footer-col a:hover { color: var(--text); }
+    .footer-bottom {
+      padding-top: 24px; border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .footer-bottom p { color: var(--text3); font-size: 0.8rem; }
+    .social-links { display: flex; gap: 12px; }
+    .social-links a {
+      width: 36px; height: 36px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--surface); border: 1px solid var(--border);
+      color: var(--text2); font-size: 0.9rem; transition: all 0.2s;
+      text-decoration: none;
+    }
+    .social-links a:hover { border-color: var(--primary); color: var(--primary2); }
+
+    /* ===== Typing Effect ===== */
+    .typing-line { min-height: 2em; display: flex; align-items: center; }
+    .cursor {
+      display: inline-block; width: 2px; height: 1.2em;
+      background: var(--primary); margin-left: 2px;
+      animation: blink 0.8s infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    /* ===== Counter Animation ===== */
+    .counter-num { display: inline-block; }
+
+    /* ===== Scroll-triggered animations ===== */
+    .fade-up {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 860px) {
+      .hero h1 { font-size: 2.8rem; }
+      .nav-links { display: none; }
+      .mobile-toggle { display: block; }
+      .nav-links.open {
+        display: flex; flex-direction: column; position: absolute;
+        top: 100%; left: 0; right: 0; background: rgba(11,11,18,0.95);
+        padding: 20px 24px; border-bottom: 1px solid var(--border);
+      }
+      .pitch-grid, .token-layout, .wp-grid { grid-template-columns: 1fr; }
+      .flow { grid-template-columns: 1fr 1fr; }
+      .access-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .hero-metrics { flex-direction: column; gap: 16px; }
+      .section-title { font-size: 2rem; }
+    }
+    @media (max-width: 480px) {
+      .hero h1 { font-size: 2rem; }
+      .flow { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ===== Toast ===== */
+    .toast {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+      padding: 12px 24px; border-radius: 12px;
+      background: var(--surface); border: 1px solid var(--border2);
+      color: var(--text); font-size: 0.9rem;
+      z-index: 9999; opacity: 0; transition: opacity 0.4s;
+      pointer-events: none; text-align: center;
+    }
+    .toast.show { opacity: 1; }
+  </style>
+</head>
+<body>
+  <canvas id="particle-canvas"></canvas>
+  <div class="toast" id="toast"></div>
+
+  <!-- Nav -->
+  <nav>
+    <div class="container">
+      <div>
+        <span class="logo" data-i18n="brand">✦ BRAIN</span>
+        <span class="logo-sub" data-i18n="brand-sub">community owned intelligence</span>
+      </div>
+      <div class="nav-right">
+        <div class="nav-links" id="navLinks">
+          <a href="#pitch" data-i18n="nav-why">Why BRAIN</a>
+          <a href="#flow" data-i18n="nav-how">How It Works</a>
+          <a href="#tokenomics" data-i18n="nav-token">Token</a>
+          <a href="#whitepaper" data-i18n="nav-wp">Whitepaper</a>
+          <a href="#roadmap" data-i18n="nav-road">Roadmap</a>
+          <a href="#faq" data-i18n="nav-faq">FAQ</a>
+        </div>
+        <button class="lang-btn" id="langBtn" onclick="toggleLang()">中文</button>
+        <button class="mobile-toggle" onclick="toggleMobile()">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== Hero ===== -->
+  <section class="hero" id="hero">
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="dot"></span>
+          <span data-i18n="hero-badge-txt">Pre-Launch · Community Building</span>
+        </div>
+        <h1>
+          <span data-i18n="hero-l1">Your Brain</span><br>
+          <span class="gradient" data-i18n="hero-l2">Funds the AI.</span><br>
+          <span data-i18n="hero-l3">The AI Pays You Back.</span>
+        </h1>
+        <p data-i18n="hero-desc">
+          BRAIN is a token that turns knowledge into value. Contribute what you know, earn $BRAIN, 
+          and govern a community-owned AI that doesn't need a billion-dollar GPU farm.<br><br>
+          No venture capital. No board room. Just you, your knowledge, and a token that rewards thinking.
+        </p>
+        <div class="hero-actions">
+          <a href="#flow" class="btn btn-primary" data-i18n="hero-cta1">How It Works ↓</a>
+          <a href="#whitepaper" class="btn btn-outline" data-i18n="hero-cta2">Read the Whitepaper</a>
+          <a href="#calc" class="btn btn-ghost" data-i18n="hero-cta3">Try the Calculator →</a>
+        </div>
+        <div class="hero-metrics">
+          <div class="metric"><div class="val green counter" data-target="1000000000">0</div><div class="lbl" data-i18n="m1">Total Supply ($BRAIN)</div></div>
+          <div class="metric"><div class="val accent">0<span class="counter" data-target="0" style="display:inline"></span></div><div class="lbl" data-i18n="m2">GPU Hours Burned (ZERO)</div></div>
+          <div class="metric"><div class="val green">∞</div><div class="lbl" data-i18n="m3">Knowledge Inputs Possible</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== The Pitch ===== -->
+  <section id="pitch">
+    <div class="container">
+      <div class="section-label fade-up" data-i18n="pitch-label">The Problem</div>
+      <h2 class="section-title fade-up" data-i18n="pitch-title">AI Is Being Built <span class="highlight">For The Wrong People</span></h2>
+      <p class="section-sub fade-up" data-i18n="pitch-sub">And it's not just about who profits — it's about who decides what the AI learns, how it behaves, and who gets to use it.</p>
+      <div class="pitch-grid">
+        <div class="pitch-card old fade-up">
+          <div class="icon">🏛️</div>
+          <h3 data-i18n="pitch-old-title">How AI Works Today</h3>
+          <p data-i18n="pitch-old-desc">A handful of companies spend billions on GPU clusters, train models on user data without asking, then charge you to use it. If you're not paying, you're the product.</p>
+          <ul>
+            <li data-i18n="pitch-old-1">$100M+ on GPU infrastructure (you fund it through fees)</li>
+            <li data-i18n="pitch-old-2">Your data trains their model, you get nothing</li>
+            <li data-i18n="pitch-old-3">One board decides what the AI can and cannot say</li>
+            <li data-i18n="pitch-old-4">Prices go up every year, features go to enterprise only</li>
+          </ul>
+        </div>
+        <div class="pitch-card new fade-up">
+          <div class="icon">🌱</div>
+          <h3 data-i18n="pitch-new-title">How BRAIN Does It</h3>
+          <p data-i18n="pitch-new-desc">No GPU farm needed. We start with open-source AI models and upgrade them through community-contributed knowledge. You submit, you vote, you earn, you use. That's the loop.</p>
+          <ul>
+            <li data-i18n="pitch-new-1">Zero GPU infrastructure — we use open-source models + RAG + LoRA</li>
+            <li data-i18n="pitch-new-2">You contribute knowledge → you earn $BRAIN <strong>for each accepted submission</strong></li>
+            <li data-i18n="pitch-new-3">AI direction voted by token holders, not a CEO</li>
+            <li data-i18n="pitch-new-4">Pay for AI with $BRAIN — fees burn 50%, 50% rewards contributors</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== How It Works ===== -->
+  <section id="flow">
+    <div class="container">
+      <div class="section-label fade-up" data-i18n="flow-label">The Loop</div>
+      <h2 class="section-title fade-up" data-i18n="flow-title">Knowledge In. <span class="highlight">Value Out.</span></h2>
+      <p class="section-sub fade-up" data-i18n="flow-sub">Four steps. One continuous cycle. No mining rig required — just a working brain.</p>
+      <div class="flow">
+        <div class="flow-card fade-up">
+          <div class="num">1</div>
+          <h4 data-i18n="flow-1-title">Buy $BRAIN</h4>
+          <p data-i18n="flow-1-desc">Get tokens on pump.fun or Raydium. $BRAIN is your key to the ecosystem — to submit, to vote, to use the AI.</p>
+        </div>
+        <div class="flow-card fade-up">
+          <div class="num">2</div>
+          <h4 data-i18n="flow-2-title">Submit Knowledge</h4>
+          <p data-i18n="flow-2-desc">Spend a few $BRAIN to submit tutorials, articles, code snippets, Q&As. AI needs to learn from real humans — that's you.</p>
+        </div>
+        <div class="flow-card fade-up">
+          <div class="num">3</div>
+          <h4 data-i18n="flow-3-title">Community Votes</h4>
+          <p data-i18n="flow-3-desc">Token holders vote on submissions. Quality content gets accepted. Both submitter AND voters get rewarded in $BRAIN.</p>
+        </div>
+        <div class="flow-card fade-up">
+          <div class="num">4</div>
+          <h4 data-i18n="flow-4-title">Use the AI. Earn More.</h4>
+          <p data-i18n="flow-4-desc">Pay $BRAIN to ask the AI questions. 50% burns (deflation). 50% goes to the content creators who made the answer possible.</p>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:48px;" class="fade-up">
+        <p style="color:var(--text2);font-size:0.9rem;" data-i18n="flow-loop">The more people contribute, the smarter the AI gets. The smarter it gets, the more people want to use it. The more it's used, the more $BRAIN gets burned. Simple economics.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Model Access ===== -->
+  <section id="model-access">
+    <div class="container">
+      <div class="section-label fade-up" data-i18n="access-label">Token-Gated AI</div>
+      <h2 class="section-title fade-up" data-i18n="access-title">You Can Use The AI With <span class="highlight">$BRAIN</span></h2>
+      <p class="section-sub fade-up" data-i18n="access-sub">Holders get access. Contributors earn access. Everyone helps decide what the AI learns next.</p>
+      <div class="access-grid">
+        <div class="access-card fade-up">
+          <div class="emoji">🤖</div>
+          <h4 data-i18n="access-1-title">Basic Query</h4>
+          <p data-i18n="access-1-desc">Ask the AI any question. It draws from the community knowledge base plus open-source models. Every query burns tokens.</p>
+          <div class="price-tag" data-i18n="access-1-price">1 $BRAIN / query</div>
+        </div>
+        <div class="access-card fade-up">
+          <div class="emoji">📚</div>
+          <h4 data-i18n="access-2-title">Deep Research</h4>
+          <p data-i18n="access-2-desc">Submit a topic for the AI to research across the full knowledge base. Get a comprehensive report with cited community sources.</p>
+          <div class="price-tag" data-i18n="access-2-price">10 $BRAIN / report</div>
+        </div>
+        <div class="access-card fade-up">
+          <div class="emoji">🏛️</div>
+          <h4 data-i18n="access-3-title">Governance Vote</h4>
+          <p data-i18n="access-3-desc">Vote on what the AI should learn next, which knowledge to prioritize, and (Phase 4) model parameters and treasury allocation.</p>
+          <div class="price-tag" data-i18n="access-3-price">Hold 1000+ $BRAIN</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Calculator ===== -->
+  <section id="calc">
+    <div class="container">
+      <div class="calc-box fade-up">
+        <h3 data-i18n="calc-title">📊 Estimate Your Earning Potential</h3>
+        <div class="calc-row">
+          <label data-i18n="calc-label1">Knowledge submissions / month</label>
+          <input type="number" id="calcSubs" value="5" min="0" oninput="calcEarnings()">
+        </div>
+        <div class="calc-row">
+          <label data-i18n="calc-label2">Average acceptance rate (%)</label>
+          <input type="number" id="calcRate" value="40" min="0" max="100" oninput="calcEarnings()">
+        </div>
+        <div class="calc-row">
+          <label data-i18n="calc-label3">Your voting power (1000s $BRAIN held)</label>
+          <input type="number" id="calcVote" value="5" min="0" oninput="calcEarnings()">
+        </div>
+        <div class="calc-result">
+          <div data-i18n="calc-result-label">Estimated monthly earnings</div>
+          <div class="big"><span id="calcResult">2,400</span> $BRAIN</div>
+          <div class="note" data-i18n="calc-note">Based on community average + your activity level. The more you contribute, the more you earn.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Tokenomics ===== -->
+  <section id="tokenomics">
+    <div class="container">
+      <div class="section-label fade-up" data-i18n="token-label">Tokenomics</div>
+      <h2 class="section-title fade-up" data-i18n="token-title">1 Billion $BRAIN. <span class="highlight">Never Minted Again.</span></h2>
+      <p class="section-sub fade-up" data-i18n="token-sub">Every AI interaction burns tokens. The more people use it, the scarcer it gets.</p>
+      <div class="token-layout">
+        <div class="allocation-list" id="allocBars">
+          <div class="alloc-item fade-up"><span class="label" data-i18n="alloc-1">Community</span><div class="bar-track"><div class="bar-fill" style="background:linear-gradient(90deg,#7c5cf0,#a855f7)" data-width="40"></div></div><span class="pct">40%</span></div>
+          <div class="alloc-item fade-up"><span class="label" data-i18n="alloc-2">Liquidity</span><div class="bar-track"><div class="bar-fill" style="background:linear-gradient(90deg,#a855f7,#c084fc)" data-width="25"></div></div><span class="pct">25%</span></div>
+          <div class="alloc-item fade-up"><span class="label" data-i18n="alloc-3">Treasury</span><div class="bar-track"><div class="bar-fill" style="background:linear-gradient(90deg,#c084fc,#e879f9)" data-width="20"></div></div><span class="pct">20%</span></div>
+          <div class="alloc-item fade-up"><span class="label" data-i18n="alloc-4">Team</span><div class="bar-track"><div class="bar-fill" style="background:linear-gradient(90deg,#e879f9,#f472b6)" data-width="10"></div></div><span class="pct">10%</span></div>
+          <div class="alloc-item fade-up"><span class="label" data-i18n="alloc-5">Airdrop</span><div class="bar-track"><div class="bar-fill" style="background:linear-gradient(90deg,#f472b6,#fb923c)" data-width="5"></div></div><span class="pct">5%</span></div>
+        </div>
+        <div class="token-details fade-up">
+          <h3 data-i18n="token-detail-title">The Burn Model</h3>
+          <p data-i18n="token-detail-desc">Every time someone uses the BRAIN AI, they spend $BRAIN. <strong>50% of those tokens are permanently burned</strong> — removed from circulation forever. The other 50% goes to the community members whose knowledge contributed to the answer.</p>
+          <div style="border-left:3px solid var(--green);padding-left:16px;margin:16px 0;">
+            <p style="color:var(--text2);font-size:0.88rem;" data-i18n="token-note">More usage → More burning → Less supply → Value for holders. No inflation. No VC unlocks dumping on you. Just supply & demand.</p>
+          </div>
+          <div class="stat-row">
+            <div class="stat-box"><div class="big">1B</div><div class="sm" data-i18n="stat-total">Total Supply</div></div>
+            <div class="stat-box"><div class="big">12mo</div><div class="sm" data-i18n="stat-lock">Team Lock</div></div>
+            <div class="stat-box"><div class="big">50%</div><div class="sm" data-i18n="stat-burn">Per-Query Burn</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Whitepaper ===== -->
+  <section id="whitepaper">
+    <div class="container">
+      <div class="section-label fade-up" data-i18n="wp-label">Whitepaper</div>
+      <h2 class="section-title fade-up" data-i18n="wp-title">How BRAIN Actually Works</h2>
+      <p class="section-sub fade-up" data-i18n="wp-sub">No fluff. No promises we can't keep. Here's the architecture.</p>
+      <div class="wp-grid">
+        <div class="wp-sect fade-up">
+          <h3>🎯 <span data-i18n="wp-1-title">The Base Model</span></h3>
+          <p data-i18n="wp-1-text">We use open-source LLMs (DeepSeek, Qwen, or similar) as the foundation. No training required — these models already understand language. Our job is to make them <em>knowledgeable</em> about what the community cares about.</p>
+          <ul>
+            <li data-i18n="wp-1-1">Open-source base (DeepSeek, Qwen, Llama)</li>
+            <li data-i18n="wp-1-2">Zero GPU training — RAG + LoRA only</li>
+            <li data-i18n="wp-1-3">Model can be swapped via community vote</li>
+          </ul>
+        </div>
+        <div class="wp-sect fade-up">
+          <h3>🧠 <span data-i18n="wp-2-title">Knowledge Base (RAG)</span></h3>
+          <p data-i18n="wp-2-text">RAG = Retrieval-Augmented Generation. instead of retraining the model, we build a community-curated database of knowledge. When you ask a question, the AI searches this database first, then generates an answer from the best sources.</p>
+          <ul>
+            <li data-i18n="wp-2-1">All submitted content goes through community voting</li>
+            <li data-i18n="wp-2-2">Accepted content is vectorized and indexed</li>
+            <li data-i18n="wp-2-3">AI cites sources — transparency built in</li>
+          </ul>
+        </div>
+        <div class="wp-sect fade-up">
+          <h3>🔧 <span data-i18n="wp-3-title">Fine-Tuning (LoRA)</span></h3>
+          <p data-i18n="wp-3-text">LoRA is a technique that adapts large models with very little compute. A single RTX 5090 (yes, the one in our office) can run a LoRA fine-tune in hours. As the knowledge base grows, we periodically fine-tune the model to internalize common community knowledge.</p>
+          <ul>
+            <li data-i18n="wp-3-1">Runs on consumer hardware (RTX 5090, ~2 days)</li>
+            <li data-i18n="wp-3-2">LoRA weights are small — can be stored on-chain</li>
+            <li data-i18n="wp-3-3">No billion-dollar GPU cluster required</li>
+          </ul>
+        </div>
+        <div class="wp-sect fade-up">
+          <h3>💰 <span data-i18n="wp-4-title">Token Flow</span></h3>
+          <p data-i18n="wp-4-text">Every action in the ecosystem circulates $BRAIN. Submit? Costs a little. Get accepted? Earn more. Vote? You're rewarded. Use the AI? Pay in $BRAIN, half burns, half goes to the knowledge contributors who made that answer possible.</p>
+          <ul>
+            <li data-i18n="wp-4-1">Submit knowledge: costs 1 $BRAIN (burned)</li>
+            <li data-i18n="wp-4-2">Accepted submission: earn 50-500 $BRAIN</li>
+            <li data-i18n="wp-4-3">Vote on submissions: earn 0.1 $BRAIN / vote</li>
+            <li data-i18n="wp-4-4">AI query: costs 1 $BRAIN — 0.5 burned, 0.5 rewards</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Roadmap ===== -->
+  <section id="roadmap">
+    <div class="container">
+      <div class="section-label fade-up" data-i18n="road-label">Roadmap</div>
+      <h2 class="section-title fade-up" data-i18n="road-title">What We're Building & <span class="highlight">When</span></h2>
+      <p class="section-sub fade-up" data-i18n="road-sub">Honest timelines. No "we'll moon by Q3" nonsense.</p>
+      <div class="road-timeline">
+        <div class="road-item now fade-up">
+          <div class="road-phase" data-i18n="road-1-phase">Phase 1 — Now</div>
+          <h4 data-i18n="road-1-title">Community Launch</h4>
+          <p data-i18n="road-1-desc">Token deployed on Solana via pump.fun. Website live. Telegram community active. Basic knowledge voting starts with manual curation to test the model. Goal: 500 holders.</p>
+          <span class="road-tag build" data-i18n="road-1-tag">🔨 Building Now</span>
+        </div>
+        <div class="road-item fade-up">
+          <div class="road-phase" data-i18n="road-2-phase">Phase 2 — 2 Weeks After Launch</div>
+          <h4 data-i18n="road-2-title">Knowledge Submission System</h4>
+          <p data-i18n="road-2-desc">Telegram bot + web interface for submitting and voting on knowledge. Full token integration — submit costs $BRAIN, rewards paid automatically. RAG knowledge base goes live.</p>
+          <span class="road-tag next" data-i18n="road-2-tag">Next Up</span>
+        </div>
+        <div class="road-item fade-up">
+          <div class="road-phase" data-i18n="road-3-phase">Phase 3 — Month 2</div>
+          <h4 data-i18n="road-3-title">AI Model Goes Live</h4>
+          <p data-i18n="road-3-desc">BRAIN AI public — token-gated access. Pay $BRAIN, ask questions, get answers from the community knowledge base. First LoRA fine-tune based on accumulated knowledge. Burn mechanism active.</p>
+          <span class="road-tag next" data-i18n="road-3-tag">Planned</span>
+        </div>
+        <div class="road-item fade-up">
+          <div class="road-phase" data-i18n="road-4-phase">Phase 4 — Month 3+</div>
+          <h4 data-i18n="road-4-title">On-Chain Governance</h4>
+          <p data-i18n="road-4-desc">Full DAO: holders vote on model selection, treasury allocation, partnership proposals, and AI behavior parameters. The community truly owns the AI. No single point of control.</p>
+          <span class="road-tag next" data-i18n="road-4-tag">Vision</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FAQ ===== -->
+  <section id="faq">
+    <div class="container">
+      <div class="section-label fade-up" data-i18n="faq-label">FAQ</div>
+      <h2 class="section-title fade-up" data-i18n="faq-title">Questions People Actually Ask</h2>
+      <p class="section-sub fade-up" data-i18n="faq-sub">We get it. Crypto is full of scams. Here's the honest answers.</p>
+      <div class="faq-list">
+        <div class="faq-item open fade-up">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            <span data-i18n="faq-1q">"Isn't this just another AI token with no real product?"</span>
+            <span class="arr">▼</span>
+          </div>
+          <div class="faq-a" data-i18n="faq-1a">Fair question. Most AI tokens are a whitepaper and a dream. We're different because we don't need to build an AI from scratch — we use existing open-source models and layer community knowledge on top. Phase 1 is the token and community. Phase 2 is the knowledge submission system (working prototype within 2 weeks of launch). Phase 3 is the live AI. We ship before we hype.</div>
+        </div>
+        <div class="faq-item fade-up">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            <span data-i18n="faq-2q">"No GPU? How can you build AI without GPU?"</span>
+            <span class="arr">▼</span>
+          </div>
+          <div class="faq-a" data-i18n="faq-2a">We don't train models from scratch. The base model (DeepSeek, Qwen, etc.) already exists and took millions of GPU hours to train — that's done, it's open source, we use it. What we add is: (1) a community-curated knowledge base through RAG, which requires ZERO GPU, and (2) periodic LoRA fine-tuning which runs on a single consumer GPU (RTX 5090, ~2 days). Total GPU cost: negligible.</div>
+        </div>
+        <div class="faq-item fade-up">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            <span data-i18n="faq-3q">"How do you prevent low-quality submissions?"</span>
+            <span class="arr">▼</span>
+          </div>
+          <div class="faq-a" data-i18n="faq-3a">Three layers: (1) submitting costs $BRAIN — spam is expensive. (2) Community voting filters quality — if you submit garbage, it won't get approved and you wasted your tokens. (3) In Phase 3+, the AI itself helps review submissions for quality. Only high-quality, community-verified content enters the knowledge base.</div>
+        </div>
+        <div class="faq-item fade-up">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            <span data-i18n="faq-4q">"What stops the team from rugging?"</span>
+            <span class="arr">▼</span>
+          </div>
+          <div class="faq-a" data-i18n="faq-4a">Team tokens (10%) are locked for 12 months via smart contract. Liquidity pool tokens will be public so anyone can verify they're locked. All major decisions go through community vote from Phase 1 (basic voting) to Phase 4 (full DAO). Our names and faces are public. A rug would destroy any value we've built — and we've been building for months.</div>
+        </div>
+        <div class="faq-item fade-up">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            <span data-i18n="faq-5q">"Why Solana? Why pump.fun?"</span>
+            <span class="arr">▼</span>
+          </div>
+          <div class="faq-a" data-i18n="faq-5a">Solana for speed and low fees — we want knowledge submissions to cost pennies, not dollars. Pump.fun for fair launch — no private sales, no VC allocations, no insider presale. Everyone buys at the same price from the same curve. And once we graduate to Raydium, liquidity is locked and visible to everyone.</div>
+        </div>
+        <div class="faq-item fade-up">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            <span data-i18n="faq-6q">"I have no special knowledge. Can I still participate?"</span>
+            <span class="arr">▼</span>
+          </div>
+          <div class="faq-a" data-i18n="faq-6a">Absolutely. You can: (1) Vote on submissions — earn $BRAIN for curating. (2) Use the AI — every query burns tokens, supporting the ecosystem. (3) Hold and govern — your voice counts regardless of expertise. And you probably know more than you think — explaining a concept to an AI is the best way to realize you do have valuable knowledge.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Footer ===== -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <span class="logo" data-i18n="brand">✦ BRAIN</span>
+          <p data-i18n="footer-desc">A token that rewards knowledge. An AI owned by its users. No VCs, no GPU farms, no bullshit. Just collective intelligence.</p>
+        </div>
+        <div class="footer-col">
+          <h5 data-i18n="footer-nav">Navigation</h5>
+          <a href="#pitch" data-i18n="nav-why">Why BRAIN</a>
+          <a href="#flow" data-i18n="nav-how">How It Works</a>
+          <a href="#tokenomics" data-i18n="nav-token">Token</a>
+          <a href="#whitepaper" data-i18n="nav-wp">Whitepaper</a>
+          <a href="#roadmap" data-i18n="nav-road">Roadmap</a>
+        </div>
+        <div class="footer-col">
+          <h5 data-i18n="footer-community">Community</h5>
+          <a href="#" target="_blank">Telegram</a>
+          <a href="#" target="_blank">Twitter / X</a>
+          <a href="#" target="_blank">Discord</a>
+        </div>
+        <div class="footer-col">
+          <h5 data-i18n="footer-legal">Legal</h5>
+          <a href="#" data-i18n="footer-tos">Terms of Service</a>
+          <a href="#" data-i18n="footer-privacy">Privacy Policy</a>
+          <a href="#" data-i18n="footer-whitepaper">Whitepaper (PDF)</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p data-i18n="footer-copy">© 2026 BRAIN. This is the beginning of something real.</p>
+        <div class="social-links">
+          <a href="#" title="Telegram">✈</a>
+          <a href="#" title="Twitter/X">𝕏</a>
+          <a href="#" title="GitHub">⌘</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ===== Particle Canvas =====
+    const canvas = document.getElementById('particle-canvas');
+    const ctx = canvas.getContext('2d');
+    let W, H, particles = [];
+    const P_COUNT = 40;
+
+    function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+    window.addEventListener('resize', resize);
+    resize();
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * W;
+        this.y = Math.random() * H;
+        this.vx = (Math.random() - 0.5) * 0.2;
+        this.vy = (Math.random() - 0.5) * 0.2;
+        this.r = Math.random() * 2 + 0.5;
+      }
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        if (this.x < 0 || this.x > W) this.vx *= -1;
+        if (this.y < 0 || this.y > H) this.vy *= -1;
+      }
+    }
+    for (let i = 0; i < P_COUNT; i++) particles.push(new Particle());
+
+    function drawParticles() {
+      ctx.clearRect(0, 0, W, H);
+      particles.forEach(p => {
+        p.update();
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(124, 92, 240, 0.5)';
+        ctx.fill();
+      });
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 180) {
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.strokeStyle = `rgba(124, 92, 240, ${0.1 * (1 - dist / 180)})`;
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(drawParticles);
+    }
+    drawParticles();
+
+    // ===== FAQ =====
+    function toggleFaq(el) {
+      el.parentElement.classList.toggle('open');
+    }
+
+    // ===== Counter Animation =====
+    function animateCounters() {
+      document.querySelectorAll('.counter').forEach(el => {
+        const target = parseInt(el.getAttribute('data-target'));
+        if (!target) return;
+        const duration = 2000;
+        const start = performance.now();
+        function update(now) {
+          const elapsed = now - start;
+          const progress = Math.min(elapsed / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          el.textContent = Math.round(eased * target).toLocaleString();
+          if (progress < 1) requestAnimationFrame(update);
+        }
+        requestAnimationFrame(update);
+      });
+    }
+
+    // ===== Scroll-triggered fade-up =====
+    function observeFade() {
+      const obs = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            e.target.classList.add('visible');
+            // Trigger bar animations when tokenomics section appears
+            if (e.target.closest('#allocBars') || e.target.closest('#tokenomics')) {
+              setTimeout(() => {
+                document.querySelectorAll('#allocBars .bar-fill').forEach(bar => {
+                  bar.style.width = bar.getAttribute('data-width') + '%';
+                });
+              }, 200);
+            }
+            obs.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.1 });
+
+      document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+    }
+
+    setTimeout(observeFade, 500);
+
+    // ===== Token Calculator =====
+    function calcEarnings() {
+      const subs = parseInt(document.getElementById('calcSubs').value) || 0;
+      const rate = parseInt(document.getElementById('calcRate').value) || 0;
+      const vote = parseInt(document.getElementById('calcVote').value) || 0;
+      // Submissions: each accepted earns avg 200 $BRAIN
+      const fromSubs = subs * (rate / 100) * 200;
+      // Voting: base rewards
+      const fromVote = vote * 40;
+      // Use the AI: bonus multiplier
+      const total = Math.round(fromSubs + fromVote);
+      document.getElementById('calcResult').textContent = Math.max(0, total).toLocaleString();
+    }
+    setTimeout(calcEarnings, 100);
+
+    // ===== Mobile Toggle =====
+    function toggleMobile() {
+      document.getElementById('navLinks').classList.toggle('open');
+    }
+
+    // ===== i18n =====
+    let currentLang = 'en';
+    const translations = {
+      en: {
+        'brand': '✦ BRAIN', 'brand-sub': 'community owned intelligence',
+        'nav-why': 'Why BRAIN', 'nav-how': 'How It Works', 'nav-token': 'Token',
+        'nav-wp': 'Whitepaper', 'nav-road': 'Roadmap', 'nav-faq': 'FAQ',
+        'hero-badge-txt': 'Pre-Launch · Community Building',
+        'hero-l1': 'Your Brain', 'hero-l2': 'Funds the AI.', 'hero-l3': 'The AI Pays You Back.',
+        'hero-desc': 'BRAIN is a token that turns knowledge into value. Contribute what you know, earn $BRAIN, and govern a community-owned AI that doesn\'t need a billion-dollar GPU farm.<br><br>No venture capital. No board room. Just you, your knowledge, and a token that rewards thinking.',
+        'hero-cta1': 'How It Works ↓', 'hero-cta2': 'Read the Whitepaper', 'hero-cta3': 'Try the Calculator →',
+        'm1': 'Total Supply ($BRAIN)', 'm2': 'GPU Hours Burned (ZERO)', 'm3': 'Knowledge Inputs Possible',
+        'pitch-label': 'The Problem', 'pitch-title': 'AI Is Being Built <span class="highlight">For The Wrong People</span>',
+        'pitch-sub': 'And it\'s not just about who profits — it\'s about who decides what the AI learns, how it behaves, and who gets to use it.',
+        'pitch-old-title': 'How AI Works Today',
+        'pitch-old-desc': 'A handful of companies spend billions on GPU clusters, train models on user data without asking, then charge you to use it.',
+        'pitch-old-1': '$100M+ on GPU infrastructure (you fund it through fees)',
+        'pitch-old-2': 'Your data trains their model, you get nothing',
+        'pitch-old-3': 'One board decides what the AI can and cannot say',
+        'pitch-old-4': 'Prices go up every year, features go to enterprise only',
+        'pitch-new-title': 'How BRAIN Does It',
+        'pitch-new-desc': 'No GPU farm needed. We use open-source AI models and upgrade them through community knowledge.',
+        'pitch-new-1': 'Zero GPU infra — open-source models + RAG + LoRA',
+        'pitch-new-2': 'You contribute → you earn $BRAIN per accepted submission',
+        'pitch-new-3': 'AI direction voted by token holders, not a CEO',
+        'pitch-new-4': 'Pay with $BRAIN — 50% burns, 50% to contributors',
+        'flow-label': 'The Loop', 'flow-title': 'Knowledge In. <span class="highlight">Value Out.</span>',
+        'flow-sub': 'Four steps. One continuous cycle. No mining rig required — just a working brain.',
+        'flow-1-title': 'Buy $BRAIN', 'flow-1-desc': 'Get tokens on pump.fun or Raydium. $BRAIN is your key to submit, vote, and use the AI.',
+        'flow-2-title': 'Submit Knowledge', 'flow-2-desc': 'Spend a few $BRAIN to submit tutorials, articles, code, Q&As.',
+        'flow-3-title': 'Community Votes', 'flow-3-desc': 'Token holders vote on submissions. Submitter AND voters earn $BRAIN.',
+        'flow-4-title': 'Use the AI. Earn More.', 'flow-4-desc': 'Pay $BRAIN to ask the AI. 50% burns. 50% to contributors.',
+        'flow-loop': 'More contributions → smarter AI → more usage → more $BRAIN burned. Simple economics.',
+        'access-label': 'Token-Gated AI', 'access-title': 'You Can Use The AI With <span class="highlight">$BRAIN</span>',
+        'access-sub': 'Holders get access. Contributors earn access. Everyone helps decide.',
+        'access-1-title': 'Basic Query', 'access-1-desc': 'Ask any question. Community knowledge + open-source models. Every query burns tokens.',
+        'access-1-price': '1 $BRAIN / query',
+        'access-2-title': 'Deep Research', 'access-2-desc': 'Full knowledge base research with cited community sources.',
+        'access-2-price': '10 $BRAIN / report',
+        'access-3-title': 'Governance Vote', 'access-3-desc': 'Vote on AI direction, knowledge priorities, treasury allocation.',
+        'access-3-price': 'Hold 1000+ $BRAIN',
+        'calc-title': '📊 Estimate Your Earning Potential',
+        'calc-label1': 'Knowledge submissions / month',
+        'calc-label2': 'Average acceptance rate (%)',
+        'calc-label3': 'Your voting power (1000s $BRAIN held)',
+        'calc-result-label': 'Estimated monthly earnings',
+        'calc-note': 'Based on community average + your activity level.',
+        'token-label': 'Tokenomics', 'token-title': '1 Billion $BRAIN. <span class="highlight">Never Minted Again.</span>',
+        'token-sub': 'Every AI interaction burns tokens. The more people use it, the scarcer it gets.',
+        'alloc-1': 'Community', 'alloc-2': 'Liquidity', 'alloc-3': 'Treasury', 'alloc-4': 'Team', 'alloc-5': 'Airdrop',
+        'token-detail-title': 'The Burn Model',
+        'token-detail-desc': 'Every time someone uses BRAIN AI, they spend $BRAIN. <strong>50% is permanently burned</strong>. The other 50% goes to knowledge contributors.',
+        'token-note': 'More usage → More burning → Less supply → Value for holders. No inflation. No VC unlocks.',
+        'stat-total': 'Total Supply', 'stat-lock': 'Team Lock', 'stat-burn': 'Per-Query Burn',
+        'wp-label': 'Architecture', 'wp-title': 'How BRAIN Actually Works',
+        'wp-sub': 'No fluff. No promises we can\'t keep. Here\'s the architecture.',
+        'wp-1-title': 'The Base Model',
+        'wp-1-text': 'We use open-source LLMs (DeepSeek, Qwen) as the foundation. No training needed.',
+        'wp-1-1': 'Open-source base (DeepSeek, Qwen, Llama)',
+        'wp-1-2': 'Zero GPU training — RAG + LoRA only',
+        'wp-1-3': 'Model can be swapped via community vote',
+        'wp-2-title': 'Knowledge Base (RAG)',
+        'wp-2-text': 'RAG = Retrieval-Augmented Generation. We build a community-curated knowledge database.',
+        'wp-2-1': 'All content goes through community voting',
+        'wp-2-2': 'Accepted content is vectorized and indexed',
+        'wp-2-3': 'AI cites sources — transparency built in',
+        'wp-3-title': 'Fine-Tuning (LoRA)',
+        'wp-3-text': 'LoRA adapts large models with little compute. A single RTX 5090 can fine-tune in hours.',
+        'wp-3-1': 'Runs on consumer hardware (RTX 5090)',
+        'wp-3-2': 'LoRA weights are small — on-chain capable',
+        'wp-3-3': 'No billion-dollar GPU cluster required',
+        'wp-4-title': 'Token Flow',
+        'wp-4-text': 'Every action circulates $BRAIN. Submit costs a little. Get accepted? Earn. Use the AI? Pay and burn.',
+        'wp-4-1': 'Submit knowledge: costs 1 $BRAIN (burned)',
+        'wp-4-2': 'Accepted submission: earn 50-500 $BRAIN',
+        'wp-4-3': 'Vote on submissions: earn 0.1 $BRAIN / vote',
+        'wp-4-4': 'AI query: costs 1 $BRAIN — 0.5 burned, 0.5 rewards',
+        'road-label': 'Roadmap', 'road-title': 'What We\'re Building & <span class="highlight">When</span>',
+        'road-sub': 'Honest timelines. No "we\'ll moon by Q3" nonsense.',
+        'road-1-phase': 'Phase 1 — Now', 'road-1-title': 'Community Launch',
+        'road-1-desc': 'Token deployed on Solana via pump.fun. Website live. Telegram community active. Goal: 500 holders.',
+        'road-1-tag': '🔨 Building Now',
+        'road-2-phase': 'Phase 2 — 2 Weeks After Launch', 'road-2-title': 'Knowledge Submission System',
+        'road-2-desc': 'Full submission + voting system live. RAG knowledge base goes online.',
+        'road-2-tag': 'Next Up',
+        'road-3-phase': 'Phase 3 — Month 2', 'road-3-title': 'AI Model Goes Live',
+        'road-3-desc': 'BRAIN AI public. Token-gated access. Pay $BRAIN, get answers. Burn mechanism active.',
+        'road-3-tag': 'Planned',
+        'road-4-phase': 'Phase 4 — Month 3+', 'road-4-title': 'On-Chain Governance',
+        'road-4-desc': 'Full DAO: model selection, treasury, partnerships — all community-voted.',
+        'road-4-tag': 'Vision',
+        'faq-label': 'FAQ', 'faq-title': 'Questions People Actually Ask',
+        'faq-sub': 'We get it. Crypto is full of scams. Here\'s the honest answers.',
+        'faq-1q': '"Isn\'t this just another AI token with no real product?"',
+        'faq-1a': 'Fair question. Most AI tokens are a whitepaper and a dream. We use existing open-source models and layer community knowledge on top. Phase 2 is the knowledge system (2 weeks after launch). Phase 3 is the live AI. We ship before we hype.',
+        'faq-2q': '"No GPU? How can you build AI without GPU?"',
+        'faq-2a': 'We don\'t train from scratch. Open-source models already exist. We add RAG (zero GPU) and LoRA (single RTX 5090, ~2 days). Total GPU cost: negligible.',
+        'faq-3q': '"How do you prevent low-quality submissions?"',
+        'faq-3a': 'Three layers: (1) Submitting costs $BRAIN — spam is expensive. (2) Community voting filters quality. (3) AI-assisted review in Phase 3+. Only verified content enters the knowledge base.',
+        'faq-4q': '"What stops the team from rugging?"',
+        'faq-4a': 'Team tokens (10%) locked for 12 months. LP tokens public and verifiably locked. All major decisions go through community vote. Our faces are public.',
+        'faq-5q': '"Why Solana? Why pump.fun?"',
+        'faq-5a': 'Solana for speed and low fees. Pump.fun for fair launch — no VCs, no presale, everyone buys at the same curve price.',
+        'faq-6q': '"I have no special knowledge. Can I still participate?"',
+        'faq-6a': 'Absolutely! Vote on submissions (earn $BRAIN), use the AI (burn tokens), hold and govern. Everyone has a role.',
+        'footer-desc': 'A token that rewards knowledge. An AI owned by its users. No VCs, no GPU farms, no bullshit.',
+        'footer-nav': 'Navigation', 'footer-community': 'Community', 'footer-legal': 'Legal',
+        'footer-tos': 'Terms of Service', 'footer-privacy': 'Privacy Policy',
+        'footer-whitepaper': 'Whitepaper (PDF)', 'footer-copy': '© 2026 BRAIN. This is the beginning of something real.',
+      },
+      zh: {
+        'brand': '✦ BRAIN', 'brand-sub': '社区拥有的智能',
+        'nav-why': '为什么是 BRAIN', 'nav-how': '运作方式', 'nav-token': '代币',
+        'nav-wp': '白皮书', 'nav-road': '路线图', 'nav-faq': 'FAQ',
+        'hero-badge-txt': '预启动 · 社区建设阶段',
+        'hero-l1': '你的知识', 'hero-l2': '就是AI的燃料。', 'hero-l3': 'AI 反哺于你。',
+        'hero-desc': 'BRAIN 是一个把知识变成价值的代币。贡献你所知道的，赚取 $BRAIN，共同治理一个不需要十亿美金 GPU 矿场的 AI。<br><br>没有风投。没有董事会。只有你和你的知识，和一个奖励思考的代币。',
+        'hero-cta1': '了解运作方式 ↓', 'hero-cta2': '阅读白皮书', 'hero-cta3': '试试收益计算器 →',
+        'm1': '总供应量 ($BRAIN)', 'm2': 'GPU 时长消耗 (= 零)', 'm3': '可输入的知识量',
+        'pitch-label': '问题所在', 'pitch-title': 'AI 正在为<span class="highlight">错误的人</span>服务',
+        'pitch-sub': '不仅是谁赚钱的问题——而是谁决定 AI 学什么、怎么用、谁能用。',
+        'pitch-old-title': '今天的 AI 怎么运作',
+        'pitch-old-desc': '少数公司花数十亿建 GPU 集群，用你的数据训练，然后收费让你使用。',
+        'pitch-old-1': 'GPU 基础设施投入 1 亿美元+（你通过使用费买单）',
+        'pitch-old-2': '你的数据训练了他们的模型，你一无所获',
+        'pitch-old-3': '一个董事会决定 AI 能说什么不能说什么',
+        'pitch-old-4': '每年涨价，好功能只给企业客户',
+        'pitch-new-title': 'BRAIN 的做法',
+        'pitch-new-desc': '不需要 GPU 矿场。用开源 AI 模型，通过社区知识持续升级。',
+        'pitch-new-1': '零 GPU 基础设施——开源模型 + RAG + LoRA',
+        'pitch-new-2': '你贡献知识 → 每条通过赚 $BRAIN',
+        'pitch-new-3': 'AI 方向由代币持有者投票，不是 CEO',
+        'pitch-new-4': '用 $BRAIN 支付——50% 销毁，50% 奖贡献者',
+        'flow-label': '循环', 'flow-title': '知识输入。<span class="highlight">价值输出。</span>',
+        'flow-sub': '四步。一个持续循环。不需要矿机——只需要一个能思考的大脑。',
+        'flow-1-title': '购买 $BRAIN', 'flow-1-desc': '在 pump.fun 或 Raydium 获取代币。$BRAIN 是参与生态的钥匙。',
+        'flow-2-title': '提交知识', 'flow-2-desc': '消耗少量 $BRAIN 提交教程、文章、代码、问答。',
+        'flow-3-title': '社区投票', 'flow-3-desc': '持有者投票筛选内容。提交者和投票者都赚 $BRAIN。',
+        'flow-4-title': '使用 AI，持续收益', 'flow-4-desc': '花 $BRAIN 向 AI 提问。50% 销毁。50% 奖励内容贡献者。',
+        'flow-loop': '更多贡献 → 更智能的 AI → 更多使用 → 更多 $BRAIN 销毁。简单的经济学。',
+        'access-label': '代币门控 AI', 'access-title': '用 <span class="highlight">$BRAIN</span> 使用 AI',
+        'access-sub': '持有者获得使用权。贡献者赚取使用权。人人参与决策。',
+        'access-1-title': '基础问答', 'access-1-desc': '提出任何问题。社区知识 + 开源模型。每次消耗代币。',
+        'access-1-price': '1 $BRAIN / 次',
+        'access-2-title': '深度研究', 'access-2-desc': '全知识库检索，生成带来源引用的综合报告。',
+        'access-2-price': '10 $BRAIN / 份',
+        'access-3-title': '治理投票', 'access-3-desc': '投票决定 AI 方向、知识优先级、金库资金分配。',
+        'access-3-price': '持有 1000+ $BRAIN',
+        'calc-title': '📊 预估你的收入潜力',
+        'calc-label1': '每月提交知识数',
+        'calc-label2': '平均通过率 (%)',
+        'calc-label3': '你持有的投票权 (千枚 $BRAIN)',
+        'calc-result-label': '预估月收入',
+        'calc-note': '基于社区平均值 + 你的活跃度。贡献越多，赚得越多。',
+        'token-label': '代币经济', 'token-title': '10 亿枚 $BRAIN。<span class="highlight">永不增发。</span>',
+        'token-sub': '每次 AI 交互都销毁代币。使用越多，供应越少。',
+        'alloc-1': '社区分配', 'alloc-2': '流动性', 'alloc-3': '金库', 'alloc-4': '团队', 'alloc-5': '空投',
+        'token-detail-title': '通缩模型',
+        'token-detail-desc': '每次使用 BRAIN AI 消耗的 $BRAIN 中，<strong>50% 永久销毁</strong>，50% 奖励知识贡献者。',
+        'token-note': '更多使用 → 更多销毁 → 更少供应 → 持有者价值上升。没有通胀，没有风投解锁砸盘。',
+        'stat-total': '总供应量', 'stat-lock': '团队锁仓', 'stat-burn': '每次销毁比例',
+        'wp-label': '技术架构', 'wp-title': 'BRAIN 的实际运作原理',
+        'wp-sub': '不讲废话。不做空头承诺。以下是技术架构。',
+        'wp-1-title': '基础模型',
+        'wp-1-text': '使用开源大模型（DeepSeek、Qwen）作为基础。无需训练。',
+        'wp-1-1': '开源底座（DeepSeek、Qwen、Llama）',
+        'wp-1-2': '零 GPU 训练——仅用 RAG + LoRA',
+        'wp-1-3': '模型可通过社区投票更换',
+        'wp-2-title': '知识库（RAG）',
+        'wp-2-text': 'RAG = 检索增强生成。建立社区知识数据库。',
+        'wp-2-1': '所有内容经社区投票筛选',
+        'wp-2-2': '通过的内容进行向量化索引',
+        'wp-2-3': 'AI 引用来源——内置透明度',
+        'wp-3-title': '微调（LoRA）',
+        'wp-3-text': 'LoRA 用极少算力适配大模型。一张 RTX 5090 数小时即可完成。',
+        'wp-3-1': '运行在消费级硬件上（RTX 5090）',
+        'wp-3-2': 'LoRA 权重小——可上链存储',
+        'wp-3-3': '不需要十亿美元的 GPU 集群',
+        'wp-4-title': '代币流转',
+        'wp-4-text': '每个操作都流通 $BRAIN。提交消耗少量。通过赚钱。使用即销毁。',
+        'wp-4-1': '提交知识：消耗 1 $BRAIN（销毁）',
+        'wp-4-2': '通过的知识：赚取 50-500 $BRAIN',
+        'wp-4-3': '投票：每次赚 0.1 $BRAIN',
+        'wp-4-4': 'AI 查询：消耗 1 $BRAIN—0.5 销毁，0.5 奖励',
+        'road-label': '路线图', 'road-title': '我们在建设什么 & <span class="highlight">什么时候</span>',
+        'road-sub': '诚实的时间线。不承诺"三季度登月"这种鬼话。',
+        'road-1-phase': '第一阶段 — 进行中', 'road-1-title': '社区启动',
+        'road-1-desc': '代币通过 pump.fun 部署在 Solana 上。官网上线。Telegram 社区活跃。目标：500 持有者。',
+        'road-1-tag': '🔨 正在建设',
+        'road-2-phase': '第二阶段 — 启动后两周', 'road-2-title': '知识提交系统',
+        'road-2-desc': '完整提交 + 投票系统上线。RAG 知识库启动。',
+        'road-2-tag': '即将到来',
+        'road-3-phase': '第三阶段 — 第二个月', 'road-3-title': 'AI 模型上线',
+        'road-3-desc': 'BRAIN AI 公开。代币门控访问。消耗 $BRAIN，获取答案。销毁机制激活。',
+        'road-3-tag': '计划中',
+        'road-4-phase': '第四阶段 — 第三个月起', 'road-4-title': '链上治理',
+        'road-4-desc': '完整 DAO：模型选择、金库、合作——全由社区投票决定。',
+        'road-4-tag': '愿景',
+        'faq-label': '常见问题', 'faq-title': '大家真正会问的问题',
+        'faq-sub': '我们懂。币圈骗子太多。这是诚实的回答。',
+        'faq-1q': '"这不又是一个没有实物的 AI 币吗？"',
+        'faq-1a': '问得好。大多数 AI 币只有白皮书和梦想。我们用已有的开源模型 + 社区知识增强。第二阶段（两周内）出知识系统。第三阶段出 AI。先出货，再营销。',
+        'faq-2q': '"没有 GPU 你们怎么搞 AI？"',
+        'faq-2a': '我们不做从零训练。开源模型已经存在。我们加 RAG（零 GPU）和 LoRA（一张 RTX 5090，两天）。总 GPU 成本：微不足道。',
+        'faq-3q': '"怎么防止低质量灌水？"',
+        'faq-3a': '三层：提交要花 $BRAIN（灌水成本高）。社区投票筛选。第三阶段 AI 辅助审核。只有验证过的内容进入知识库。',
+        'faq-4q': '"团队跑路了怎么办？"',
+        'faq-4a': '团队代币（10%）锁定 12 个月。LP 锁仓公开可查。重大决策走社区投票。团队公开身份。跑路 = 摧毁多年建设的一切。',
+        'faq-5q': '"为什么选 Solana 和 pump.fun？"',
+        'faq-5a': 'Solana 快且便宜——提交知识只花几分钱。Pump.fun 公平启动——没有风投轮，没有预售，都在同一条曲线买。',
+        'faq-6q': '"我没有专业知识也能参与吗？"',
+        'faq-6a': '当然可以！投票筛选内容（赚 $BRAIN）、使用 AI（消耗代币）、持有并治理。每个人都有自己的角色。',
+        'footer-desc': '一个奖励知识的代币。一个属于用户的 AI。没有风投、没有 GPU 矿场、没有骗局。',
+        'footer-nav': '导航', 'footer-community': '社区', 'footer-legal': '法律',
+        'footer-tos': '服务条款', 'footer-privacy': '隐私政策',
+        'footer-whitepaper': '白皮书 (PDF)', 'footer-copy': '© 2026 BRAIN. 真正的开始。',
+      }
+    };
+
+    function applyLang(lang) {
+      currentLang = lang;
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[lang] && translations[lang][key] !== undefined) {
+          el.innerHTML = translations[lang][key];
+        }
+      });
+      document.getElementById('langBtn').textContent = lang === 'en' ? '中文' : 'EN';
+      document.documentElement.lang = lang;
+    }
+
+    function toggleLang() {
+      applyLang(currentLang === 'en' ? 'zh' : 'en');
+    }
+
+    // Auto-detect language
+    const userLang = (navigator.language || 'en').substring(0, 2);
+    applyLang(userLang === 'zh' ? 'zh' : 'en');
+
+    // ===== Toast helper =====
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    // ===== Click-interactive features =====
+    document.addEventListener('click', function(e) {
+      // If someone clicks the lang btn, play a fun message
+      // But only once
+    });
+
+    // ===== Parallax effect on hero =====
+    window.addEventListener('scroll', function() {
+      const scrollY = window.scrollY;
+      const hero = document.querySelector('.hero');
+      if (hero && scrollY < window.innerHeight) {
+        hero.style.transform = `translateY(${scrollY * 0.05}px)`;
+      }
+    });
+
+    console.log('BRAIN website loaded. Thanks for being here.');
+    console.log('Built with ❤️  for the community, by the community.');
+  </script>
+</body>
+</html>

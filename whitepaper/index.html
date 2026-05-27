@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MIND AI Whitepaper — How Community-Owned AI Works | $MINDAI</title>
+  <meta name="description" content="MIND AI is a community-owned AI token on Solana. This whitepaper explains the architecture: RAG knowledge base, LoRA fine-tuning, token-gated AI access, fair launch tokenomics, and the three-layer economic flywheel of $MINDAI.">
+  <meta name="keywords" content="MIND AI, $MINDAI whitepaper, community-owned AI, Solana AI token, RAG knowledge base, LoRA fine-tuning, AI tokenomics, decentralized AI, token-gated AI, fair launch, pump.fun, knowledge economy">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://mindtoken.fun/whitepaper/">
+  <link rel="alternate" hreflang="en" href="https://mindtoken.fun/whitepaper/">
+  <link rel="alternate" hreflang="zh" href="https://mindtoken.fun/whitepaper/?lang=zh">
+  <link rel="alternate" hreflang="x-default" href="https://mindtoken.fun/whitepaper/">
+  <meta property="og:title" content="MIND AI Whitepaper — How Community-Owned AI Works">
+  <meta property="og:description" content="MIND AI ($MINDAI) technical whitepaper. Architecture overview: RAG knowledge base, LoRA fine-tuning, fair launch tokenomics, and the economic flywheel model.">
+  <meta property="og:image" content="https://mindtoken.fun/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:url" content="https://mindtoken.fun/whitepaper/">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@MindTokenSOL">
+  <meta name="twitter:title" content="MIND AI Whitepaper — How Community-Owned AI Works">
+  <meta name="twitter:description" content="$MINDAI whitepaper: RAG + LoRA + token-gated AI. Architecture, tokenomics, and economic flywheel.">
+  <meta name="twitter:image" content="https://mindtoken.fun/og-image.png">
+  <link rel="icon" type="image/png" href="/favicon.ico">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "MIND AI Whitepaper — How Community-Owned AI Works",
+    "url": "https://mindtoken.fun/whitepaper/",
+    "description": "Technical whitepaper for MIND AI, a community-owned AI token on Solana. Covers RAG knowledge base, LoRA fine-tuning, token-gated access, fair launch tokenomics, and the three-layer economic flywheel.",
+    "author": {
+      "@type": "Organization",
+      "name": "MIND AI",
+      "url": "https://mindtoken.fun"
+    },
+    "datePublished": "2026-05-24",
+    "dateModified": "2026-05-27",
+    "publisher": {
+      "@type": "Organization",
+      "name": "MIND AI"
+    },
+    "about": {
+      "@type": "Thing",
+      "name": "$MINDAI Token",
+      "description": "MIND AI is a community-owned AI token on Solana with fair launch tokenomics."
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "MIND AI Home", "item": "https://mindtoken.fun" },
+      { "@type": "ListItem", "position": 2, "name": "Whitepaper", "item": "https://mindtoken.fun/whitepaper/" }
+    ]
+  }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0b0b12; --bg2: #111122; --surface: #16162a;
+      --border: rgba(120, 100, 240, 0.12); --border2: rgba(120, 100, 240, 0.25);
+      --primary: #7c5cf0; --primary2: #9b7cf5; --purple: #a855f7;
+      --pink: #f472b6; --green: #22c55e; --orange: #fb923c;
+      --text: #e4e4ed; --text2: #9999b3; --text3: #666680;
+      --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    }
+    body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.8; }
+    a { color: var(--primary2); text-decoration: none; }
+    a:hover { color: #b8a0ff; }
+    .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+    nav {
+      padding: 18px 0; border-bottom: 1px solid var(--border);
+      background: rgba(11,11,18,0.88); backdrop-filter: blur(16px); position: sticky; top: 0; z-index: 100;
+    }
+    nav .container { display: flex; align-items: center; justify-content: space-between; }
+    .logo { font-weight: 800; font-size: 1.2rem; }
+    .logo a { background: linear-gradient(135deg, var(--primary), var(--pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .nav-link { color: var(--text2); font-size: 0.85rem; transition: color 0.2s; }
+    .nav-link:hover { color: var(--text); }
+    .wp-header { padding: 64px 0 40px; border-bottom: 1px solid var(--border); }
+    .wp-header h1 { font-size: 2.6rem; font-weight: 900; line-height: 1.15; margin-bottom: 16px; letter-spacing: -0.5px; }
+    .wp-header h1 .gradient { background: linear-gradient(135deg, var(--primary), var(--pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .wp-header .meta { color: var(--text3); font-size: 0.85rem; display: flex; gap: 20px; flex-wrap: wrap; }
+    .wp-header p { color: var(--text2); font-size: 1.05rem; margin: 20px 0 0; max-width: 640px; }
+    .toc { padding: 32px 0; }
+    .toc h2 { font-size: 1.1rem; margin-bottom: 16px; color: var(--primary2); }
+    .toc ol { list-style: none; counter-reset: toc; }
+    .toc ol li { counter-increment: toc; padding: 6px 0; }
+    .toc ol li::before { content: counter(toc) ". "; color: var(--primary); font-weight: 700; }
+    .toc ol li a { color: var(--text2); font-size: 0.92rem; }
+    .toc ol li a:hover { color: var(--text); }
+    .wp-section { padding: 48px 0; border-bottom: 1px solid var(--border); }
+    .wp-section:last-of-type { border-bottom: none; }
+    .wp-section .section-num { font-size: 0.8rem; font-weight: 700; color: var(--primary); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+    .wp-section h2 { font-size: 1.6rem; font-weight: 800; margin-bottom: 20px; }
+    .wp-section h2 .icon { margin-right: 8px; }
+    .wp-section h3 { font-size: 1.2rem; margin: 24px 0 12px; color: var(--primary2); }
+    .wp-section p { color: var(--text2); font-size: 0.95rem; margin-bottom: 12px; line-height: 1.8; }
+    .wp-section ul { list-style: none; margin: 12px 0; }
+    .wp-section ul li { padding: 5px 0; color: var(--text2); font-size: 0.9rem; }
+    .wp-section ul li::before { content: "→ "; color: var(--primary); }
+    .highlight { color: var(--pink); font-weight: 600; }
+    .callout {
+      padding: 16px 20px; border-radius: 12px; margin: 20px 0;
+      border: 1px solid var(--border2);
+    }
+    .callout.green { background: rgba(34,197,94,0.06); border-color: rgba(34,197,94,0.15); }
+    .callout.purple { background: rgba(124,92,240,0.06); border-color: rgba(124,92,240,0.15); }
+    .callout .label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+    .callout.green .label { color: var(--green); }
+    .callout.purple .label { color: var(--primary2); }
+    .flywheel-grid { display: flex; flex-direction: column; gap: 16px; margin: 20px 0; }
+    .fly-card { padding: 20px; border-radius: 10px; background: var(--surface); border: 1px solid var(--border); }
+    .fly-card .title { font-size: 0.8rem; font-weight: 700; margin-bottom: 8px; }
+    .fly-card ul { margin: 0; }
+    footer {
+      padding: 40px 0; border-top: 1px solid var(--border);
+      text-align: center;
+    }
+    footer p { color: var(--text3); font-size: 0.82rem; margin-bottom: 8px; }
+    footer .links { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-top: 12px; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 24px; border-radius: 10px; font-size: 0.9rem; font-weight: 700;
+      border: none; cursor: pointer; font-family: var(--font);
+      transition: all 0.25s; text-decoration: none;
+    }
+    .btn-primary { background: linear-gradient(135deg, var(--primary), var(--purple)); color: #fff; }
+    .btn-outline { background: transparent; color: var(--text); border: 1px solid var(--border2); }
+    .btn-outline:hover { border-color: var(--primary); }
+    .btns { display: flex; gap: 12px; flex-wrap: wrap; margin: 24px 0; }
+    @media (max-width: 600px) {
+      .wp-header h1 { font-size: 1.8rem; }
+      .wp-section h2 { font-size: 1.3rem; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="container">
+      <div class="logo"><a href="https://mindtoken.fun">✦ MIND AI</a></div>
+      <a href="https://mindtoken.fun" class="nav-link">← Back to Home</a>
+    </div>
+  </nav>
+
+  <!-- Header -->
+  <header class="wp-header">
+    <div class="container">
+      <h1>MIND AI <span class="gradient">Whitepaper</span></h1>
+      <div class="meta">
+        <span>Version 1.0</span>
+        <span>Published: May 24, 2026</span>
+        <span>Updated: May 27, 2026</span>
+      </div>
+      <p>How a community-owned AI works — powered by <strong>$MINDAI</strong>. No billion-dollar GPU farms. Just collective intelligence, token-gated access, and a sustainable economic flywheel.</p>
+    </div>
+  </header>
+
+  <!-- TOC -->
+  <div class="toc"><div class="container">
+    <h2>Table of Contents</h2>
+    <ol>
+      <li><a href="#introduction">Introduction: The Problem with Centralized AI</a></li>
+      <li><a href="#base-model">The Base Model — Open-Source Foundation</a></li>
+      <li><a href="#rag">Knowledge Base (RAG) — Community-Curated Intelligence</a></li>
+      <li><a href="#lora">Fine-Tuning (LoRA) — Lightweight Adaptation</a></li>
+      <li><a href="#tokenomics">Tokenomics — Fair Launch Economics</a></li>
+      <li><a href="#flywheel">Economic Flywheel — Three-Layer Engine</a></li>
+      <li><a href="#token-access">Token-Gated AI Access</a></li>
+      <li><a href="#roadmap">Roadmap</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ol>
+  </div></div>
+
+  <!-- 1. Introduction -->
+  <section class="wp-section" id="introduction">
+    <div class="container">
+      <div class="section-num">Section 01</div>
+      <h2><span class="icon">🏛️</span> The Problem with Centralized AI</h2>
+      <p>Today's artificial intelligence is controlled by a handful of corporations. They spend billions on GPU infrastructure, train models on user data without consent or compensation, and charge users for access. If you're not paying, you're the product.</p>
+      <p><strong>The result:</strong> A small group of people decides what AI can learn, how it behaves, and who gets to use it. Innovation is gated by access to capital, not access to ideas.</p>
+      <p><strong>MIND AI's solution:</strong> Replace the centralized model with a community-owned alternative. We use existing open-source AI models as our foundation, then layer community-curated knowledge on top through <span class="highlight">RAG</span> (Retrieval-Augmented Generation) and periodic <span class="highlight">LoRA</span> fine-tuning. The $MINDAI token powers the ecosystem — used for submission, voting, and access.</p>
+      <p>No GPU farm needed. No VC funding required. Just a token that rewards thinking.</p>
+    </div>
+  </section>
+
+  <!-- 2. Base Model -->
+  <section class="wp-section" id="base-model">
+    <div class="container">
+      <div class="section-num">Section 02</div>
+      <h2><span class="icon">🎯</span> The Base Model — Open-Source Foundation</h2>
+      <p>MIND AI does <strong>not</strong> train AI models from scratch. Instead, we leverage existing open-source large language models (LLMs) — including <span class="highlight">Qwen 3, DeepSeek, and Llama</span> — as our base.</p>
+      <p>These models are already trained on vast datasets and understand language at a human level. Our job is not to teach them language — it's to make them <em>knowledgeable</em> about what the community cares about.</p>
+      <div class="callout purple">
+        <div class="label">Key Advantages</div>
+        <p style="margin:0;font-size:0.9rem;">
+          ✅ Self-hosted — no dependency on third-party APIs like OpenAI<br>
+          ✅ Zero training cost — models are freely available<br>
+          ✅ Swappable — the community can vote to change the base model at any time<br>
+          ✅ Single GPU operation — inference runs on consumer hardware (RTX 5090)
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. RAG -->
+  <section class="wp-section" id="rag">
+    <div class="container">
+      <div class="section-num">Section 03</div>
+      <h2><span class="icon">🧠</span> Knowledge Base (RAG) — Community-Curated Intelligence</h2>
+      <p><span class="highlight">RAG</span> stands for <strong>Retrieval-Augmented Generation</strong>. Instead of retraining the model, we build a community-curated database of knowledge that the AI references in real-time when answering questions.</p>
+      <p><strong>How it works:</strong></p>
+      <ul>
+        <li>Community members submit knowledge — tutorials, articles, code snippets, Q&amp;As, research notes</li>
+        <li>Each submission costs a small amount of $MINDAI (anti-spam mechanism)</li>
+        <li>Token holders vote on submissions. If quality content gets accepted, both the submitter <strong>and</strong> the voters earn $MINDAI rewards</li>
+        <li>Accepted content is <span class="highlight">vectorized</span> and stored in a searchable index</li>
+        <li>When a user asks a question, the AI first retrieves the most relevant knowledge from this index, then generates an answer using both the retrieved context and its base model capabilities</li>
+        <li><strong>Transparency:</strong> The AI cites its sources — every answer is traceable back to the community submission it drew from</li>
+      </ul>
+      <div class="callout green">
+        <div class="label">Current Status</div>
+        <p style="margin:0;font-size:0.9rem;">
+          ✅ Knowledge submission and voting system — <strong>Live</strong> (Phase 2, May 25, 2026)<br>
+          ✅ Telegram bot at <a href="https://t.me/mindaitoken">t.me/mindaitoken</a> — submit with <code>/submit</code>, vote with <code>/vote</code><br>
+          🛠️ RAG knowledge base indexing — <strong>In development</strong> (Phase 3)<br>
+          🛠️ Full AI query interface — <strong>In development</strong> (Phase 3)
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. LoRA -->
+  <section class="wp-section" id="lora">
+    <div class="container">
+      <div class="section-num">Section 04</div>
+      <h2><span class="icon">🔧</span> Fine-Tuning (LoRA) — Lightweight Adaptation</h2>
+      <p><span class="highlight">LoRA</span> (Low-Rank Adaptation) is a fine-tuning technique that adapts large models using minimal compute. Instead of updating all 70B+ parameters, LoRA trains a small set of "adapter" weights that can be applied on top of the frozen base model.</p>
+      <p><strong>Key benefits for MIND AI:</strong></p>
+      <ul>
+        <li>Runs on <span class="highlight">consumer hardware</span> — a single RTX 5090 can complete a LoRA fine-tune in approximately 2 days</li>
+        <li>LoRA weights are <span class="highlight">small</span> (megabytes, not gigabytes) — small enough to be stored on-chain or distributed via the community</li>
+        <li>No billion-dollar GPU cluster required — democratizing AI development</li>
+        <li>Periodic fine-tuning internalizes common community knowledge, making the AI faster and more accurate without RAG retrieval every time</li>
+      </ul>
+      <p>As the knowledge base grows, we periodically fine-tune a LoRA adapter that captures the most frequently accessed community knowledge. This means common questions get answered instantly, while the RAG system handles specific, novel queries.</p>
+    </div>
+  </section>
+
+  <!-- 5. Tokenomics -->
+  <section class="wp-section" id="tokenomics">
+    <div class="container">
+      <div class="section-num">Section 05</div>
+      <h2><span class="icon">⚖️</span> Tokenomics — Fair Launch Economics</h2>
+      <p><strong>$MINDAI</strong> launched on <span class="highlight">pump.fun</span> on May 24, 2026, with a <strong>fully fair launch model</strong>. No pre-allocation, no VC round, no private sale, no insider tokens. Everyone — including the team — buys from the same bonding curve at the same price.</p>
+      <div class="callout purple">
+        <div class="label">Token Summary</div>
+        <p style="margin:0;font-size:0.9rem;">
+          <strong>Total Supply:</strong> 1,000,000,000 $MINDAI (fixed, never minted again)<br>
+          <strong>Launch Platform:</strong> pump.fun (Solana)<br>
+          <strong>Contract Address:</strong> <code>9xSirb8EkpPg1EsUPBeeeM9GYS7tnZZZXLbAMScJpump</code><br>
+          <strong>Fair Launch:</strong> Zero pre-allocation. Team has no pre-minted tokens.<br>
+          <strong>Team Commitment:</strong> 100M $MINDAI purchased at market price → community airdrop pool<br>
+          <strong>Team Lock:</strong> 100M $MINDAI purchased at market price → locked on StakePoint (12 months)<br>
+          <strong>Check live price:</strong> <a href="https://pump.fun/coin/9xSirb8EkpPg1EsUPBeeeM9GYS7tnZZZXLbAMScJpump">pump.fun →</a>
+        </p>
+      </div>
+      <h3>Why Fair Launch Matters</h3>
+      <p>Most crypto projects allocate tokens to VCs and founders before the public can buy. This creates misaligned incentives — insiders sell into public demand. MIND AI's model ensures that everyone has the same starting point. Value is created through usage, not through token distribution advantage.</p>
+    </div>
+  </section>
+
+  <!-- 6. Economic Flywheel -->
+  <section class="wp-section" id="flywheel">
+    <div class="container">
+      <div class="section-num">Section 06</div>
+      <h2><span class="icon">💰</span> Economic Flywheel — Three-Layer Engine</h2>
+      <p>The MIND AI economy operates on three interconnected layers. Each layer reinforces the others, creating a self-sustaining growth cycle.</p>
+      <div class="flywheel-grid">
+        <div class="fly-card" style="border-left: 3px solid var(--green);">
+          <div class="title" style="color: var(--green);">🌱 Layer 1 — Knowledge Input</div>
+          <ul>
+            <li>📝 Submit knowledge → Spend $MINDAI (anti-spam)</li>
+            <li>🗳️ Vote on content → Earn $MINDAI</li>
+            <li>✅ Get approved → Earn more $MINDAI</li>
+            <li>🧠 Use the AI → Spend $MINDAI</li>
+          </ul>
+        </div>
+        <div class="fly-card" style="border-left: 3px solid var(--orange);">
+          <div class="title" style="color: var(--orange);">🏢 Layer 2 — Enterprise Revenue</div>
+          <ul>
+            <li>🤖 Custom AI agents for businesses → Pay $MINDAI</li>
+            <li>🔌 Knowledge base API access → Subscribe $MINDAI</li>
+            <li>📦 White-label solutions → Project-based $MINDAI</li>
+          </ul>
+        </div>
+        <div class="fly-card" style="border-left: 3px solid var(--pink);background:linear-gradient(135deg,rgba(124,92,240,0.08),rgba(232,121,249,0.08));">
+          <div class="title" style="color: var(--pink);">💎 Layer 3 — Value Flywheel</div>
+          <p style="font-size:0.9rem;color:var(--text2);margin:0;">
+            Enterprise revenue → Open market buyback of $MINDAI → Burn or reward community → Token scarcity 📈 → More people want to hold → More contributions → Smarter AI → More enterprise clients → Revenue grows → <strong>Cycle repeats</strong>.
+          </p>
+        </div>
+      </div>
+      <p>This flywheel is what makes $MINDAI fundamentally different from speculative meme tokens. Value accrues through real usage — not hype.</p>
+    </div>
+  </section>
+
+  <!-- 7. Token-Gated Access -->
+  <section class="wp-section" id="token-access">
+    <div class="container">
+      <div class="section-num">Section 07</div>
+      <h2><span class="icon">🔑</span> Token-Gated AI Access</h2>
+      <p>MIND AI uses <span class="highlight">token-gated access</span> — you need $MINDAI to submit knowledge, vote, and query the AI. This creates a self-sustaining economic model:</p>
+      <ul>
+        <li>🧠 <strong>AI Query:</strong> Pay $MINDAI to ask questions. The AI searches the community knowledge base and generates answers.</li>
+        <li>📚 <strong>Knowledge Base:</strong> All submissions are indexed and voted on. Contributors earn $MINDAI for quality content.</li>
+        <li>🗳️ <strong>Governance:</strong> $MINDAI holders vote on knowledge priorities, model direction, and community initiatives.</li>
+      </ul>
+      <p><strong>During BETA:</strong> Submit and vote are free. No token required to participate. Join <a href="https://t.me/mindaitoken">t.me/mindaitoken</a> to start contributing.</p>
+    </div>
+  </section>
+
+  <!-- 8. Roadmap -->
+  <section class="wp-section" id="roadmap">
+    <div class="container">
+      <div class="section-num">Section 08</div>
+      <h2>Roadmap</h2>
+      <p>Honest timelines. No "we'll moon by Q3" nonsense.</p>
+      <div class="callout green">
+        <div class="label">Phase 1 — Now</div>
+        <p style="margin:0;font-size:0.9rem;">
+          <strong>Community Launch</strong> — Token deployed on pump.fun (May 24). Website live. Telegram community active. Goal: 500 holders.<br>
+          <span style="color:var(--green);">✅ Completed</span>
+        </p>
+      </div>
+      <div class="callout green">
+        <div class="label">Phase 2 — Early Launch</div>
+        <p style="margin:0;font-size:0.9rem;">
+          <strong>Knowledge Submission System</strong> — Telegram bot + voting. RAG knowledge base goes live. Full token integration.<br>
+          <span style="color:var(--green);">✅ Live Now (May 25)</span>
+        </p>
+      </div>
+      <div class="callout purple">
+        <div class="label">Phase 3 — Month 2</div>
+        <p style="margin:0;font-size:0.9rem;">
+          <strong>AI Model Goes Live</strong> — Token-gated AI access. Pay $MINDAI, ask questions, get answers. First LoRA fine-tune. Burn mechanism active.<br>
+          <span style="color:var(--primary2);">🛠️ In Development</span>
+        </p>
+      </div>
+      <div style="padding:16px 20px;border-radius:12px;margin:20px 0;border:1px solid var(--border);background:var(--surface);">
+        <div class="label" style="font-size:0.75rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Phase 4 — Month 3+</div>
+        <p style="margin:0;font-size:0.9rem;color:var(--text2);">
+          <strong>On-Chain Governance</strong> — Full DAO: model selection, treasury, partnerships, AI behavior parameters — all community-voted.<br>
+          <span style="color:var(--text3);">Vision</span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. FAQ -->
+  <section class="wp-section" id="faq">
+    <div class="container">
+      <div class="section-num">Section 09</div>
+      <h2>Frequently Asked Questions</h2>
+      <div style="margin-top:24px;">
+        <h3>"Isn't this just another AI token with no real product?"</h3>
+        <p>No. Most AI tokens are a whitepaper and a dream. MIND AI uses existing open-source models and layers community knowledge on top. Phase 2 (knowledge system) is already live — launched early. Phase 3 is the live AI. <strong>We ship before we hype.</strong></p>
+      </div>
+      <div style="margin-top:24px;">
+        <h3>"No GPU? How can you build AI without GPU?"</h3>
+        <p>We don't train from scratch. Open-source models already exist. We add RAG (zero GPU inference) and LoRA (single RTX 5090, ~2 days). Total GPU cost: <strong>negligible</strong> compared to centralized AI companies spending $100M+ on clusters.</p>
+      </div>
+      <div style="margin-top:24px;">
+        <h3>"How do you prevent low-quality submissions?"</h3>
+        <p>Three layers: (1) Submitting costs $MINDAI — spam is expensive. (2) Community voting filters quality — bad submissions don't get approved. (3) In Phase 3+, the AI itself assists in review. Only verified, high-quality content enters the knowledge base.</p>
+      </div>
+      <div style="margin-top:24px;">
+        <h3>"What stops the team from rugging?"</h3>
+        <p>The team purchased 100M $MINDAI at market price and locked them on StakePoint for 12 months — <strong>verifiable on-chain</strong>. No pre-allocated tokens. No insider advantage. Major decisions go through community vote. Our identities are public. A rug would destroy everything we've built.</p>
+      </div>
+      <div style="margin-top:24px;">
+        <h3>"Why Solana? Why pump.fun?"</h3>
+        <p>Solana for <strong>speed and low fees</strong> — knowledge submissions should cost pennies, not dollars. Pump.fun for <strong>fair launch</strong> — no VCs, no presale, everyone buys at the same curve price. Once we graduate to Raydium, liquidity is locked and publicly visible.</p>
+      </div>
+      <div style="margin-top:24px;">
+        <h3>"I have no special knowledge. Can I still participate?"</h3>
+        <p>Absolutely! Vote on submissions (earn $MINDAI for curating), use the AI (every query supports the ecosystem), hold and govern. Everyone has a role.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div style="padding:48px 0;border-top:1px solid var(--border);text-align:center;">
+    <div class="container">
+      <h2 style="font-size:1.6rem;font-weight:800;margin-bottom:16px;">Get Started with <span class="gradient" style="background:linear-gradient(135deg,var(--primary),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">$MINDAI</span></h2>
+      <p style="color:var(--text2);margin-bottom:24px;">Buy on pump.fun. Join the Telegram. Start contributing.</p>
+      <div class="btns" style="justify-content:center;">
+        <a href="https://pump.fun/coin/9xSirb8EkpPg1EsUPBeeeM9GYS7tnZZZXLbAMScJpump" target="_blank" class="btn btn-primary">🛒 Buy $MINDAI</a>
+        <a href="https://t.me/mindaitoken" target="_blank" class="btn btn-outline">✈ Join Telegram</a>
+        <a href="https://x.com/MindTokenSOL" target="_blank" class="btn btn-outline">𝕏 Follow @MindTokenSOL</a>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <p>© 2026 MIND AI. This is the beginning of something real.</p>
+      <p style="font-size:0.75rem;max-width:600px;margin:0 auto;line-height:1.6;">⚠️ DISCLAIMER: MIND AI is a community token. This whitepaper is for informational purposes only. Nothing herein constitutes financial advice. Do your own research. Cryptocurrency investments carry high risk.</p>
+      <div class="links">
+        <a href="https://mindtoken.fun">← Back to Home</a>
+        <a href="https://t.me/mindaitoken">Telegram</a>
+        <a href="https://x.com/MindTokenSOL">Twitter / X</a>
+        <a href="https://pump.fun/coin/9xSirb8EkpPg1EsUPBeeeM9GYS7tnZZZXLbAMScJpump">pump.fun</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

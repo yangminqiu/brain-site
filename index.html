@@ -23,6 +23,7 @@
   <meta name="twitter:title" content="MIND AI — The AI You Own">
   <meta name="twitter:site" content="@MindTokenSOL">
   <meta name="twitter:description" content="MIND AI — the AI you own. Pay with $MINDAI, earn through knowledge.">
+  <meta name="google-site-verification" content="YOUR_VERIFICATION_CODE" />
   <meta name="twitter:image" content="https://mindtoken.fun/og-image.png">
   <link rel="icon" type="image/png" href="/favicon.ico">
   <script type="application/ld+json">
@@ -1026,8 +1027,8 @@
         </div>
         <div class="footer-col">
           <h5 data-i18n="footer-legal">Legal</h5>
-          <a href="#" data-i18n="footer-tos">Terms of Service</a>
-          <a href="#" data-i18n="footer-privacy">Privacy Policy</a>
+          <a href="/tos/" data-i18n="footer-tos">Terms of Service</a>
+          <a href="/privacy/" data-i18n="footer-privacy">Privacy Policy</a>
           <a href="/whitepaper/" data-i18n="footer-whitepaper">Whitepaper</a>
         </div>
       </div>
@@ -1407,7 +1408,10 @@
     }
 
     // Default: English. Click button to switch to Chinese.
-    applyLang('en');
+    // Auto-detect language from URL or browser
+      const urlLang = new URLSearchParams(window.location.search).get('lang');
+      const browserLang = navigator.language.startsWith('zh') ? 'zh' : 'en';
+      applyLang(urlLang || browserLang);
 
     // ===== Toast helper =====
     function showToast(msg) {

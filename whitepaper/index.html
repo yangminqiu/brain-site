@@ -3,26 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MIND AI Whitepaper — Community Data Network for Crypto AI | $MINDAI</title>
-  <meta name="description" content="MIND AI is a community-powered data network for Crypto AI. This whitepaper explains the architecture: task system, cross-verification, revenue distribution, and the economic flywheel of $MINDAI.">
-  <meta name="keywords" content="MIND AI, $MINDAI whitepaper, community data network, crypto AI data, data annotation, Solana data network, cross-verification, data labeling, crypto intelligence, fair launch">
+  <title>MIND AI Whitepaper — Building the Data Layer for Crypto AI | $MINDAI</title>
+  <meta name="description" content="MIND AI is building the data layer for Crypto AI. This whitepaper outlines the vision, the model, and the future of community-powered data infrastructure for crypto intelligence.">
+  <meta name="keywords" content="MIND AI, $MINDAI whitepaper, crypto AI data layer, community data network, Scale AI for crypto, crypto intelligence">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://mindtoken.fun/whitepaper/">
-  <link rel="alternate" hreflang="en" href="https://mindtoken.fun/whitepaper/">
-  <link rel="alternate" hreflang="zh" href="https://mindtoken.fun/whitepaper/?lang=zh">
-  <link rel="alternate" hreflang="x-default" href="https://mindtoken.fun/whitepaper/">
-  <meta property="og:title" content="MIND AI Whitepaper — Community Data Network for Crypto AI">
-  <meta property="og:description" content="MIND AI ($MINDAI) technical whitepaper. Architecture overview: task system, cross-verification, revenue distribution, and the economic flywheel model.">
+  <meta property="og:title" content="MIND AI Whitepaper — Building the Data Layer for Crypto AI">
+  <meta property="og:description" content="MIND AI ($MINDAI) whitepaper — building the community-powered data layer for Crypto AI.">
   <meta property="og:image" content="https://mindtoken.fun/og-image.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
   <meta property="og:url" content="https://mindtoken.fun/whitepaper/">
   <meta property="og:type" content="article">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@MindTokenSOL">
-  <meta name="twitter:title" content="MIND AI Whitepaper — Community Data Network for Crypto AI">
-  <meta name="twitter:description" content="$MINDAI whitepaper: Community-powered data network for Crypto AI. Architecture, tokenomics, and economic flywheel.">
-  <meta name="twitter:image" content="https://mindtoken.fun/og-image.png">
   <link rel="icon" type="image/png" href="/favicon.ico">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -30,7 +22,7 @@
       --bg: #0b0b12; --bg2: #111122; --surface: #16162a; --surface2: #1c1c35;
       --border: rgba(120, 100, 240, 0.12); --border2: rgba(120, 100, 240, 0.25);
       --primary: #7c5cf0; --primary2: #9b7cf5; --purple: #a855f7; --pink: #f472b6;
-      --orange: #fb923c; --green: #22c55e; --red: #ef4444;
+      --green: #22c55e;
       --text: #e4e4ed; --text2: #9999b3; --text3: #666680;
       --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
     }
@@ -42,130 +34,77 @@
     h2 { font-size: 1.6rem; font-weight: 800; margin: 40px 0 16px; color: var(--text); }
     h3 { font-size: 1.2rem; font-weight: 700; margin: 24px 0 12px; color: var(--text); }
     p { color: var(--text2); margin-bottom: 16px; }
-    ul { list-style: none; margin-bottom: 16px; }
-    ul li { padding: 6px 0; color: var(--text2); border-bottom: 1px solid var(--border); }
-    ul li::before { content: "→ "; color: var(--primary); }
     .meta { color: var(--text3); font-size: 0.85rem; margin-bottom: 40px; }
     .back { display: inline-block; margin: 20px 0; color: var(--text3); font-size: 0.85rem; }
     .back:hover { color: var(--primary2); }
     .box { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin: 24px 0; }
-    .box h4 { font-size: 1rem; margin-bottom: 8px; }
     hr { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
-    .highlight { color: var(--primary2); }
   </style>
 </head>
 <body>
   <div class="container" style="padding-top: 60px; padding-bottom: 80px;">
     <a href="/" class="back">← Back to MIND AI</a>
     <h1><span class="gradient">MIND AI Whitepaper</span></h1>
-    <p style="font-size:1.15rem;color:var(--text2);">Community-Powered Data Network for Crypto AI</p>
-    <div class="meta">Version 2.0 · May 29, 2026 · $MINDAI</div>
+    <p style="font-size:1.15rem;color:var(--text2);">Building the Data Layer for Crypto AI</p>
+    <div class="meta">v2.1 · May 29, 2026 · $MINDAI</div>
 
     <h2>Abstract</h2>
-    <p>MIND AI is a community-powered data annotation network built on Solana. It connects crypto-knowledgeable contributors who label and verify data with enterprises that need high-quality training datasets for their AI systems. The network uses a fair launch token ($MINDAI) for staking, rewards, and governance.</p>
-    <p><strong>Like Scale AI, but community-owned.</strong></p>
+    <p>MIND AI is building the data layer for Crypto AI — a community-powered infrastructure that produces, verifies, and delivers high-quality labeled data for the crypto industry. Think Scale AI for crypto, but community-owned.</p>
+    <p>The data annotation market is valued at over $10B and growing. Scale AI alone is valued at $13B+. Yet crypto-specific data barely exists. MIND AI fills this gap.</p>
 
-    <h2>1. The Problem</h2>
-    <p>AI systems in crypto need labeled data — but high-quality crypto-specific datasets barely exist. Traditional data annotation is:</p>
-    <ul>
-      <li><strong>Centralized</strong> — dominated by a handful of companies that control pricing and quality</li>
-      <li><strong>Expensive</strong> — enterprise annotation costs $0.50-$5 per item, pricing out smaller projects</li>
-      <li><strong>Not crypto-native</strong> — general annotators don't understand DeFi, MEV, or Solana transactions</li>
-      <li><strong>Unfair</strong> — workers earn pennies while platforms keep the margin</li>
+    <h2>1. The Opportunity</h2>
+    <p>AI systems need labeled data to function. In the enterprise world, companies like Scale AI have built billion-dollar businesses providing this data layer. The crypto industry is at the same inflection point:</p>
+    <ul style="list-style:none;margin-bottom:16px;">
+      <li style="padding:6px 0;color:var(--text2);border-bottom:1px solid var(--border);">→ AI-powered crypto tools are emerging — trading bots, risk analysis, compliance</li>
+      <li style="padding:6px 0;color:var(--text2);border-bottom:1px solid var(--border);">→ These tools need labeled data specific to crypto — transactions, protocols, projects</li>
+      <li style="padding:6px 0;color:var(--text2);border-bottom:1px solid var(--border);">→ This data barely exists today, and no one is building it at scale</li>
     </ul>
-    <p>The $10B+ data annotation industry has a crypto-shaped hole. MIND AI fills it.</p>
+    <p>The data layer is the missing piece. MIND AI is building it.</p>
 
-    <h2>2. The Solution: Community Data Network</h2>
-    <p>MIND AI replaces centralized annotation with community-powered cross-verification:</p>
-    <ul>
-      <li><strong>Task Creation</strong> — Platform or enterprises create annotation tasks with clear instructions</li>
-      <li><strong>Community Annotation</strong> — Contributors pick tasks and submit answers</li>
-      <li><strong>Cross-Verification</strong> — 5 annotators per task; majority decides ground truth</li>
-      <li><strong>Rewards</strong> — Accepted annotations earn $MINDAI; quality builds reputation</li>
-      <li><strong>Data Packaging</strong> — Verified data is compiled into datasets for enterprise sale</li>
+    <h2>2. The Model</h2>
+    <p>MIND AI is a community-powered data network. The model is simple:</p>
+    <ul style="list-style:none;margin-bottom:16px;">
+      <li style="padding:6px 0;color:var(--text2);border-bottom:1px solid var(--border);">→ <strong>Produce</strong> — People who understand crypto contribute their knowledge to the network</li>
+      <li style="padding:6px 0;color:var(--text2);border-bottom:1px solid var(--border);">→ <strong>Verify</strong> — Data is validated by the community, ensuring quality and accuracy</li>
+      <li style="padding:6px 0;color:var(--text2);border-bottom:1px solid var(--border);">→ <strong>Deliver</strong> — Verified datasets are made available to enterprises and developers</li>
+      <li style="padding:6px 0;color:var(--text2);border-bottom:1px solid var(--border);">→ <strong>Reward</strong> — Value flows back to the contributors and token holders who make it possible</li>
     </ul>
+
+    <h2>3. $MINDAI Token</h2>
+    <p>$MINDAI is a fixed-supply utility token (1,000,000,000 total) that powers the data network. Fair launched on pump.fun with zero pre-allocation.</p>
 
     <div class="box">
-      <h4>💡 Task Types (Phase 2)</h4>
-      <ul>
-        <li><strong>Concept Explanation</strong> — Explain crypto/AI concepts in 50-100 words</li>
-        <li><strong>Transaction Classification</strong> — Categorize Solana transactions (transfer, swap, contract, NFT, MEV)</li>
-        <li><strong>Project Assessment</strong> — Evaluate project descriptions as real/suspicious/scam</li>
-      </ul>
+      <h4>⚖️ Fair Launch</h4>
+      <p>No VC round. No private sale. No insider tokens. Everyone buys at the same price from the same bonding curve.</p>
+      <p style="margin:0;">Team purchased 200M $MINDAI at market price: 100M for community rewards, 100M <a href="https://stakepoint.app/locks/cmppcvqp70000l704n1mvfkoa" target="_blank">locked on StakePoint</a> for 12 months.</p>
     </div>
 
-    <h2>3. Tokenomics: $MINDAI</h2>
-    <p>$MINDAI is a utility token that powers the data network. Fixed supply of 1,000,000,000 tokens, never minted again.</p>
+    <p><strong>Token utility:</strong> Network participation, contributor rewards, enterprise access, and community governance.</p>
 
-    <h3>Fair Launch</h3>
-    <p>$MINDAI launched on pump.fun (May 24, 2026). Zero pre-allocation. No VC round. No private sale. Everyone — including the team — buys from the same bonding curve at the same price.</p>
-    <ul>
-      <li>🟢 Total Supply: <strong>1,000,000,000 $MINDAI</strong></li>
-      <li>🟢 Team: 200M purchased at market price (100M for community rewards, 100M <a href="https://stakepoint.app/locks/cmppcvqp70000l704n1mvfkoa" target="_blank">locked on StakePoint</a> for 12 months)</li>
-      <li>🟢 Contract: <code>9xSirb8EkpPg1EsUPBeeeM9GYS7tnZZZXLbAMScJpump</code></li>
+    <h2>4. The Benchmark: Scale AI</h2>
+    <p>Scale AI is the clearest analogue to what MIND AI is building:</p>
+    <ul style="list-style:none;margin-bottom:16px;">
+      <li style="padding:6px 0;color:var(--text2);border-bottom:1px solid var(--border);">→ Valued at $13B+ as of 2026</li>
+      <li style="padding:6px 0;color:var(--text2);border-bottom:1px solid var(--border);">→ Provides labeled data for enterprise AI systems</li>
+      <li style="padding:6px 0;color:var(--text2);border-bottom:1px solid var(--border);">→ Customers include OpenAI, Meta, and the U.S. government</li>
+    </ul>
+    <p>Where Scale AI is centralized, MIND AI is community-powered. Where Scale AI serves general enterprise, MIND AI serves crypto. The market demand is proven. We're bringing it to a new industry with a better ownership model.</p>
+
+    <h2>5. Roadmap</h2>
+    <ul style="list-style:none;margin-bottom:16px;">
+      <li style="padding:6px 0;color:var(--text2);border-bottom:1px solid var(--border);"><strong>Phase 1 ✅</strong> — Token launch, community formation, team token lock</li>
+      <li style="padding:6px 0;color:var(--text2);border-bottom:1px solid var(--border);"><strong>Phase 2 🛠️</strong> — Community data production begins. First datasets take shape.</li>
+      <li style="padding:6px 0;color:var(--text2);border-bottom:1px solid var(--border);"><strong>Phase 3</strong> — Enterprise access opens. First customers purchase verified datasets.</li>
+      <li style="padding:6px 0;color:var(--text2);border-bottom:1px solid var(--border);"><strong>Phase 4</strong> — DAO governance. Full community ownership of the data layer.</li>
     </ul>
 
-    <h3>Token Utility</h3>
-    <ul>
-      <li><strong>Staking</strong> — Lock $MINDAI to access annotation tasks (anti-cheat mechanism)</li>
-      <li><strong>Rewards</strong> — Earn $MINDAI for accepted annotations and accurate cross-verification</li>
-      <li><strong>Reputation</strong> — Higher reputation unlocks premium tasks with better rewards</li>
-      <li><strong>Governance</strong> — Hold $MINDAI to vote on network parameters and data pricing</li>
-      <li><strong>Enterprise Payment</strong> — Buy datasets by paying $MINDAI (or USDC → buyback)</li>
-    </ul>
-
-    <h3>Revenue Distribution</h3>
-    <p>When enterprises purchase datasets, revenue is distributed transparently:</p>
-    <ul>
-      <li><strong>40%</strong> → Annotator rewards (distributed in $MINDAI)</li>
-      <li><strong>20%</strong> → Market buyback of $MINDAI (not publicly announced)</li>
-      <li><strong>20%</strong> → Treasury (development, operations, future growth)</li>
-      <li><strong>20%</strong> → Operating costs (servers, tools, marketing, community management)</li>
-    </ul>
-
-    <h2>4. Quality Assurance</h2>
-    <p>Data quality is ensured through a multi-layered system:</p>
-    <ul>
-      <li><strong>Cross-Verification</strong> — 5 annotators per task; majority agreement is required for acceptance</li>
-      <li><strong>Staking</strong> — Annotators must stake $MINDAI; bad annotations result in slashing</li>
-      <li><strong>Reputation</strong> — Accuracy tracked over time; low reputation limits task access</li>
-      <li><strong>AI-Assisted Review</strong> — In Phase 4+, AI flags low-quality annotations for manual review</li>
-      <li><strong>Enterprise Validation</strong> — Datasets include quality reports; buyers can challenge flagged items</li>
-    </ul>
-
-    <h2>5. Economic Flywheel</h2>
-
-    <div class="box">
-      <h4>🌱 Layer 1 — Data Generation</h4>
-      <p>Community annotates data → earns $MINDAI → more people join → more data produced → better datasets.</p>
-    </div>
-
-    <div class="box">
-      <h4>🏢 Layer 2 — Enterprise Revenue</h4>
-      <p>Enterprises buy datasets → pay $MINDAI → 40% to annotators, 20% market buyback → token demand increases.</p>
-    </div>
-
-    <div class="box">
-      <h4>💎 Layer 3 — Value Flywheel</h4>
-      <p>Enterprise revenue → Market buyback → Token scarcity 📈 → More annotators → Better data → More clients → Revenue grows → Cycle repeats.</p>
-    </div>
-
-    <h2>6. Roadmap</h2>
-    <ul>
-      <li><strong>Phase 1 ✅</strong> — Token launch, website, community (May 24-28, 2026). Team lock on StakePoint completed.</li>
-      <li><strong>Phase 2 🛠️</strong> — 100 annotation tasks designed. Telegram task system live. Beta test with 10 users.</li>
-      <li><strong>Phase 3</strong> — Full community annotation. Reputation system. 1,000+ verified annotations. Sample dataset.</li>
-      <li><strong>Phase 4</strong> — First enterprise client. Revenue sharing live. Market buybacks. DAO governance activated.</li>
-    </ul>
-
-    <h2>7. Legal & Compliance</h2>
-    <p>$MINDAI is a utility token used for task participation, contributor rewards, reputation access, and ecosystem governance. It is not an investment product. MIND AI does not guarantee token price, profit, liquidity, or market performance.</p>
-    <p><strong>Data sources:</strong> All data is sourced from publicly available on-chain information and community-contributed content. No personal privacy data is collected or stored.</p>
+    <h2>6. Legal</h2>
+    <p>$MINDAI is a utility token for network participation and governance. It is not an investment product. MIND AI does not guarantee token price, profit, or liquidity. Data is sourced from community contributions and publicly available on-chain information.</p>
 
     <hr>
     <p style="text-align:center;color:var(--text3);font-size:0.85rem;">
       MIND AI · <a href="https://mindtoken.fun">mindtoken.fun</a> · <a href="https://t.me/mindaitoken">Telegram</a> · <a href="https://x.com/MindTokenSOL">X</a><br>
-      © 2026 MIND AI. Building the data layer for Crypto AI.
+      Building the data layer for Crypto AI.
     </p>
   </div>
 </body>

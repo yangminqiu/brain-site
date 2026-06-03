@@ -420,7 +420,8 @@
     .fade-up.visible { opacity: 1; transform: translateY(0); }
 
     @media (max-width: 860px) {
-      .hero h1 { font-size: 2.8rem; }
+      body { overflow-x: hidden; }
+      .hero h1 { font-size: 2.4rem; }
       .nav-links { display: none; }
       .mobile-toggle { display: block; }
       .nav-links.open {
@@ -428,17 +429,25 @@
         top: 100%; left: 0; right: 0; background: rgba(11,11,18,0.95);
         padding: 20px 24px; border-bottom: 1px solid var(--border);
       }
-      .vision-grid, .token-layout { grid-template-columns: 1fr; }
-      .flow-grid { grid-template-columns: 1fr 1fr; }
+      .hero-content { max-width: 100%; overflow: hidden; }
+      .vision-grid, .token-layout { grid-template-columns: 1fr; gap: 24px; }
+      .flow-grid { grid-template-columns: 1fr; }
       .eco-grid { grid-template-columns: 1fr; }
-      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
       .hero-metrics { flex-direction: column; gap: 16px; }
-      .section-title { font-size: 2rem; }
+      .section-title { font-size: 1.6rem; }
+      section { padding: 60px 0; }
+      .container { padding: 0 16px; }
+      .road-timeline { padding-left: 20px; }
+      .road-item { padding-bottom: 28px; }
     }
     @media (max-width: 480px) {
-      .hero h1 { font-size: 2rem; }
-      .flow-grid { grid-template-columns: 1fr; }
-      .footer-grid { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 1.8rem; }
+      .section-title { font-size: 1.3rem; }
+      .hero-badge { font-size: 0.7rem; }
+      .section-sub { font-size: 0.9rem; }
+      .road-phase { font-size: 0.65rem; }
+      #early-msg, .token-layout p { font-size: 0.85rem; }
     }
 
     .toast {

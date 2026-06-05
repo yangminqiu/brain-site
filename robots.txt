@@ -1,3 +1,10 @@
 User-agent: *
 Allow: /
+Allow: /whitepaper/
+Allow: /blog/
+Allow: /assets/
+
+Disallow: /assets/*.pdf
+Disallow: /?lang=zh
+
 Sitemap: https://mindtoken.fun/sitemap.xml
